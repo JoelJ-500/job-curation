@@ -271,6 +271,13 @@ Then follow every instruction in the RULES section below to produce the final La
 
 * **Main Dashboard:** Dashboard containing all the final curated jobs along with their generated recommended resumes(in latex), with a link to the direct job posting so they can apply. Users may also delete job postings. 
 
+Frontend implementation (User Profile page — built):
+- Stack: React + TypeScript + Vite + React Router + MUI; forms via react-hook-form. App in `frontend/`.
+- Shared app shell with routed pages (`/profile`, `/settings`, `/dashboard`) so Settings and Dashboard slot in later.
+- Documents: multi-file drag & drop; adding files uploads them and invokes Agent 1; the UI polls extraction status and refills the form when finished; files can be removed and extraction re-run.
+- Editable sections mirroring the database: basic info, social media, work eligibility, skills, roles, experience (+ per-role highlight bullets), education & credentials, additional context; Save / Discard actions.
+- Data layer: typed API client with a mock adapter (simulated extraction) used until the backend exists, toggled by `VITE_USE_MOCK_API`. Backend contract: `GET/PUT /api/profile`, `POST/GET /api/profile/documents`, `DELETE /api/profile/documents/{id}`, `POST /api/profile/extract`, `GET /api/profile/status`.
+
 **Future Improvements:**  
 \- Telemetrics, track how many jobs have been searched, pass through the skill filter, ATS filter etc, viewable in the main dashboard.  
 \- In built application tracker?

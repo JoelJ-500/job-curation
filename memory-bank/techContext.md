@@ -8,7 +8,8 @@
 - **LangGraph** — agentic workflow / multi-agent graph orchestration.
 - **Selenium** — browser automation (job site interaction / scraping navigation).
 - **Scrapy** — only use if you cannot extract HTML data from the parsed websites.
-- **React** — front-end (OPTIONAL: any styling/theming library as deemed fit).
+- **React** — front-end. Implemented with **React + TypeScript + Vite 5 + React Router +
+  MUI** (forms via `react-hook-form`) in `frontend/`.
 - **Postgres Vector Database** — long-term data storage (candidate profiles, job data,
   embeddings).
 
@@ -59,6 +60,11 @@
   - Env: `PYTHONDONTWRITEBYTECODE=1`, `PYTHONUNBUFFERED=1`.
 - **Commands (`commands.txt`):**
   - Run docker image: `docker exec -it <container name> bash`
+  - Frontend (run on the host — the dev container has no Node): `cd frontend && npm install`,
+    then `npm run dev` (http://localhost:5173) or `npm run build` (tsc type-check + Vite).
+    Host Node is v18.19, so Vite is pinned to 5.x (Vite 7 needs Node >= 20.19).
+  - Frontend env flags (`.env`): `VITE_USE_MOCK_API` (mock data layer on/off),
+    `VITE_API_BASE_URL` (defaults to `/api`, proxied to the backend by Vite).
 - **Git:** repository `origin: https://github.com/JoelJ-500/job-curation.git`, branch `main`.
   `.gitignore` currently ignores `commands.txt` and `.env`.
 - **Database (Docker Compose):** `docker-compose.yml` runs `pgvector/pgvector:pg16` as

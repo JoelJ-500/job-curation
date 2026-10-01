@@ -113,6 +113,36 @@ similarity uses the pgvector `<=>` operator, with an HNSW index (`vector_cosine_
 
 ---
 
+## Frontend Architecture (User Profile UI)
+React + TypeScript + Vite + React Router + MUI, in `frontend/`.
+
+- **App shell** (`components/layout/AppShell.tsx`) renders the top nav; routes live in
+  `App.tsx`: `/profile`, `/settings`, `/dashboard` (Settings + Dashboard are placeholders so
+  the shell is future-proof).
+- **Data layer** (`api/`): a typed `ProfileApi` interface with two adapters — a real HTTP
+  adapter (`api/client.ts` + `api/profile.ts`) and a mock adapter
+  (`api/mock/mockAdapter.ts`, simulated extraction, localStorage backed). Chosen by
+  `VITE_USE_MOCK_API`. Types in `types/profile.ts` use `snake_case` to match the backend.
+- **Reusable pieces**: `SectionCard`, `RepeatableSection` (generic add/remove rows),
+  `FormFields` (`FormTextField`/`FormCheckbox` wrapping MUI + react-hook-form `Controller`),
+  `StatusBanner`.
+- **Save helper**: `utils/profile.ts` → `normalizeProfileForSave` converts empty strings to
+  `null`, normalizes the education enum, drops empty highlights, and pins experience order.
+
+**Backend contract (to implement with the agents):**
+```
+GET    /api/profile                 -> UserProfile
+PUT    /api/profile                 <- UserProfile
+POST   /api/profile/documents       <- multipart files[]  -> UserDocument[]
+GET    /api/profile/documents       -> UserDocument[]
+DELETE /api/profile/documents/{id}
+POST   /api/profile/extract         -> trigger Agent 1
+GET    /api/profile/status          -> { state: idle|extracting|done|error }
+# future: /api/settings, /api/jobs, /api/resumes
+```
+
+---
+
 ## Algorithm Details
 
 ### Agent 1 — Acquiring User Data

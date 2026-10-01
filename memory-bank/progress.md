@@ -44,8 +44,8 @@
 | `db/smoke_test.sql` | ✅ | Rollback smoke test for the schema |
 | `.env.example` / `.env` | ✅ | DB connection settings (`.env` gitignored) |
 | `requirements-db.txt` | ✅ | `psycopg[binary]`, `pgvector` |
+| `frontend/` (React app) | 🟡 | Scaffolded: app shell + **User Profile page** done; Settings/Dashboard placeholders. Mock data layer; not yet wired to the backend |
 | Backend source code | ⬜ | Not started |
-| Frontend (React) source | ⬜ | Not started |
 | `requirements.txt` / `pyproject.toml` | ⬜ | Not present |
 | Postgres Vector DB setup / schema | ✅ | Applied automatically on container start |
 | LangGraph agent graph | ⬜ | Not started |
@@ -59,8 +59,9 @@
    compatibility scorer, priority queue builder.
 4. **Agent 3 (Resume Builder)** — resume-generation chain, LaTeX output, PDF (and optional
    `.docx`) compilation.
-5. **Front-end** — Settings page (thresholds + hover help), Profile form (edit/reupload),
-   Main Dashboard (ranked jobs + resumes + apply links + delete).
+5. **Front-end** — 🟡 Profile form done (upload + editable form, mock data layer). Still to
+   build: Settings page (thresholds + hover help) and Main Dashboard (ranked jobs + resumes
+   + apply links + delete), plus wiring the UI to the backend.
 6. **Orchestration** — LangGraph graph wiring the agents, background/scheduled curator runs,
    time-delay anti-bot handling.
 7. **Persistence** — ✅ Postgres Vector DB schema for profiles, jobs, embeddings, and
@@ -71,7 +72,10 @@
 ## Open Decisions To Resolve Before/While Building
 - LLM provider + model (embedding model resolved: `all-MiniLM-L6-v2`, `vector(384)`).
 - LaTeX→PDF toolchain and `.docx` generation approach.
-- React build tooling and styling library.
+- Frontend build tooling + styling: **resolved** — Vite 5 + TypeScript + React Router + MUI,
+  forms via react-hook-form (`frontend/`).
+- Backend framework for the API (FastAPI proposed) and where uploaded document files are
+  stored (DB `bytea` vs filesystem path) — to decide with Agent 1.
 - Mapping between "Skill Match threshold" (skill overlap count) and "Semantic Text Match"
   threshold (embedding cosine) — both persisted in `user_settings`.
 - Concrete `langchain-postgres` `PGVectorStore` wiring against the `jobs`/`users` vector

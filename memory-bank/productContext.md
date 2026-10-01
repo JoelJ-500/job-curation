@@ -54,13 +54,18 @@ hoverable to show a short explanation of what it does:
   (once or periodically).
 - **Time Delay** — delay applied to every job parsed, to help bypass anti-bot measures.
 
-### User Profile Form
-A form presenting all extracted profile data fields, which the user can edit/fix. Includes
-the option to **reupload documents** to refill all form data. Fields to display (see
-`systemPatterns.md` for full Pydantic schema):
-- `full_name`, `contact_email`, `social_media`, `location`, `work_eligib`, `skills`,
-  `roles`, `experience` (list of `WorkExp`), `yoe`, `education_and_credentials`,
-  `additional_context`.
+### User Profile Form (implemented)
+A page presenting all extracted profile data, editable by the user, with a document upload
+area at the top. Adding documents uploads them and triggers the extraction agent; while it
+runs the UI shows a status banner, then refills the form (the user reviews and saves).
+Sections mirror the database (see `systemPatterns.md` → Persistent Data Model):
+- **Documents** — drag & drop multi-file upload, file list with remove, "re-run extraction".
+- **Basic information** — `full_name`, `contact_email`, `location`, `language_preference`,
+  `requires_sponsorship`, `yoe`.
+- **Social media**, **Work eligibility**, **Skills**, **Roles** — repeatable rows.
+- **Experience** — repeatable cards, each with a nested list of highlight bullets.
+- **Education & credentials**, **Additional context** — repeatable rows.
+Actions: Save profile, Discard changes (reverts to the last saved/extracted state).
 
 ### Main Dashboard
 - Displays all final curated job postings (priority-ordered by compatibility).

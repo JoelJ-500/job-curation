@@ -14,11 +14,16 @@
 - **Memory Bank initialized** from `DESIGN.md`. No application source code exists yet — the
   project is at **M0 (scaffolding)**.
 - No general dependency manifest (`requirements.txt`/`pyproject.toml`) yet (DB deps are in
-  `requirements-db.txt`); no React app yet.
+  `requirements-db.txt`).
+- **Frontend User Profile UI built**: React + TS + Vite + MUI app in `frontend/` with an app
+  shell (Profile/Settings/Dashboard routes), a document uploader that triggers extraction,
+  and the full editable profile form mirroring the DB. Runs against a mock data layer until
+  the backend exists (`VITE_USE_MOCK_API`).
 
 ## Current Focus
-The database foundation is complete and verified. Next is scaffolding the backend and
-implementing **Agent 1 (Acquire User Data)** on top of the existing schema.
+The database schema and the User Profile UI are complete. Next is scaffolding the Python
+backend (proposed FastAPI) and implementing **Agent 1 (Acquire User Data)** so the upload →
+extract flow becomes real, then wiring the frontend to it.
 
 ## Immediate Next Steps (recommended order)
 1. **Confirm remaining open technical decisions with the user** (blocking for
@@ -41,7 +46,8 @@ implementing **Agent 1 (Acquire User Data)** on top of the existing schema.
    strict JSON contract, and priority queue builder.
 6. **Implement Agent 3** — resume-generation chain (Jake's template), LaTeX output, PDF +
    optional `.docx`.
-7. **Build the React front-end** — Settings, Profile form (edit + reupload), Main Dashboard.
+7. **Build the React front-end** — 🟡 Profile form done (upload + editable form, mock data
+   layer). Remaining: wire the UI to the backend API contract, then Settings + Main Dashboard.
 8. **Orchestrate with LangGraph** — wire agents into a graph; support background/scheduled
    curator runs and the configurable per-job time delay.
 
@@ -59,6 +65,11 @@ implementing **Agent 1 (Acquire User Data)** on top of the existing schema.
 - Respect the one-page / single-column / standard-header ATS formatting constraints.
 
 ## Recent Changes
+- 2026-10-01: Built the **User Profile UI** in `frontend/` (Vite 5 + React + TS + React
+  Router + MUI + react-hook-form): app shell with routed Profile/Settings/Dashboard, a
+  document uploader that triggers extraction and refills the form, and the full editable
+  profile form mirroring the DB schema. Includes a swappable mock data layer + the backend
+  API contract; build + dev-server smoke checks pass.
 - 2026-10-01: Added the Postgres + pgvector database: `docker-compose.yml`, `db/schema.sql`
   (normalized 18-table schema), `db/README.md`, `db/smoke_test.sql`, `requirements-db.txt`,
   `.env`/`.env.example`; container verified healthy and the smoke test passes. Updated
