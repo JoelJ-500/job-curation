@@ -141,7 +141,7 @@ The JSON structure must match this template exactly:
   }
 
 **Step 4: Building a priority queue of curated job postings**  
-If the overall match score is \>= Compatibility Score (Default of 70, make this editable by the user in user settings), add this to the final curated job posting priority queue. The queue should be sorted from highest to lowest compatibility
+If the overall match score is \>= Compatibility Score (Default of 70, make this editable by the user in user settings), add this to the final curated job posting priority queue. The queue should be sorted from highest to lowest compatibility. Then add this queue to the CuratedJobs database. 
 
 3. **Resume Builder**
 
@@ -282,3 +282,101 @@ Then follow every instruction in the RULES section below to produce the final La
 - **Emulating OOP in multi agent sys:** Each agent can follow the OOP principle of an object- in this case agent, having an overall purpose.  
 -  
 
+
+Database Schema (Postgres + pgvector):
+
+The tables below are the normalized version of the first-draft schema. The single source
+of truth (DDL) is `db/schema.sql`, applied automatically when the database container is
+first created (see `docker-compose.yml` and `db/README.md`). Fields are still extracted
+from the user's documents via a Pydantic description handed to the LLM.
+
+Architectural fixes applied to the first draft:
+- Foreign keys were inverted: each collection (skills, roles, social media, etc.) now holds
+  a `user_id` FK to `users`, instead of `UserInfo` pointing at single child rows.
+- Added primary keys to every table, plus `created_at`/`updated_at` audit columns.
+- Split multi-valued fields into their own tables (no lists stored inside a single row).
+- `skills` and `roles` are canonical dictionaries joined to users many-to-many, which
+  removes the `skill_name -> type` dependency.
+- Education dates are atomic (`start_date`, `end_date`) instead of a "start-end" string.
+- The massive job posting string is stored once in `jobs`; `curated_jobs` references it by
+  `job_id` (no duplication), and `curated_jobs` is scoped per user.
+- `ATS score` lives on the generated resume, not on the raw job.
+- Added tables the pipeline needs but the draft omitted: `resumes`, `user_settings`,
+  `scrape_runs`, `user_documents`, `schema_migrations`.
+- Embeddings are `vector(384)` (open-source model `all-MiniLM-L6-v2`).
+
+Tables:
+
+users (candidate profile root)
+- id (PK)
+- full_name
+- contact_email
+- location
+- language_preference
+- requires_sponsorship
+- yoe
+- profile_embedding vector(384)   (null until embedded)
+- embedding_model, embedded_at
+- created_at, updated_at
+
+user_settings (one row per user)
+- user_id (PK, FK -> users)
+- skill_match_threshold          (default 3)
+- semantic_text_match_threshold  (0-1, default 0.5)
+- compatibility_score_threshold  (0-100, default 70)
+- curator_time_period_minutes    (XOR curator_job_limit)
+- curator_job_limit
+- time_delay_seconds
+- updated_at
+
+Owned one-to-many children of users:
+- social_media(user_id FK, platform, username, link)
+- work_eligibility(user_id FK, country_name, type: citizenship|work_visa|residency)
+- experiences(user_id FK, company_or_org, role, start_date, end_date, sort_order)
+- experience_highlights(experience_id FK, highlight, sort_order)
+- educations(user_id FK, institution_name, credential_name, type, start_date, end_date)
+- additional_context_entries(user_id FK, entry, sort_order)
+- user_documents(user_id FK, file_name, mime_type, storage_path, extracted_text)
+
+Canonical dictionaries + many-to-many joins:
+- skills(id, name UNIQUE, type)   +  user_skills(user_id, skill_id)
+- roles(id, name UNIQUE)          +  user_roles(user_id, role_id)
+
+jobs (every scraped posting, deduplicated pool)
+- id (PK)
+- source, external_id
+- title, company, location, link
+- date_posted
+- description (the massive posting string)
+- status: scraped|embedded|scored|rejected|curated
+- description_embedding vector(384)
+- embedding_model, embedded_at
+- scraped_at, created_at, updated_at
+- UNIQUE (source, link)
+
+curated_jobs (final curated priority queue / dashboard, per user)
+- id (PK)
+- user_id (FK -> users), job_id (FK -> jobs)   UNIQUE (user_id, job_id)
+- semantic_score
+- overall_match_score
+- hard_skills_score, experience_depth_score, role_seniority_score, eligibility_score
+- status: active|hidden|deleted   (dashboard "delete" = soft delete)
+- added_at, updated_at
+
+resumes (one or more versions per curated job)
+- id (PK)
+- curated_job_id (FK -> curated_jobs)   UNIQUE (curated_job_id, version)
+- latex_content
+- pdf_path, docx_path
+- ats_score
+- version, created_at
+
+scrape_runs (curator telemetry)
+- id (PK), source, started_at, finished_at
+- jobs_found, jobs_passed_embedding, jobs_curated
+- status: running|completed|failed
+
+schema_migrations (version PK, applied_at)
+
+Embeddings: `vector(384)` sized for `all-MiniLM-L6-v2`; cosine similarity uses the pgvector
+`<=>` operator with an HNSW index (`vector_cosine_ops`) on `jobs.description_embedding`.

@@ -1,0 +1,9 @@
+# Database access dependencies for the Postgres + pgvector store.
+#
+# These are the minimum packages needed to connect to the database and read/write
+# embeddings from Python. The LangChain integration package (langchain-postgres,
+# which provides PGVectorStore) will be added together with the agent code, so it
+# is intentionally not listed here yet.
+
+psycopg[binary]>=3.2
+pgvector>=0.3

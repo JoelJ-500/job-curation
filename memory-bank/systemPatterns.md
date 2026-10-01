@@ -75,6 +75,42 @@ Every scraped/curated job is stored as:
 - `job posting` (a massive string)
 - `ATS score` (`null` until Resume Builder / Step 3)
 
+**Persisted form:** these fields live in the `jobs` table (raw scraped postings,
+deduplicated) plus the `curated_jobs` table (the per-user dashboard queue with scores).
+`ATS score` lives on the generated `resumes` row, not on the raw job. See **Persistent
+Data Model** below and `db/schema.sql`.
+
+---
+
+## Persistent Data Model (Postgres + pgvector)
+Normalized from the design's first draft; the source of truth (DDL) is `db/schema.sql`,
+applied automatically on first DB start. Key fixes: FKs moved onto child tables, PKs added,
+multi-valued fields split into their own tables, `skills`/`roles` made canonical
+dictionaries with join tables, education dates made atomic, the raw-vs-curated job split,
+and tables added for resumes, settings, and embeddings.
+
+Tables:
+- **users** — profile root: `full_name`, `contact_email`, `location`,
+  `language_preference`, `requires_sponsorship`, `yoe`, `profile_embedding vector(384)`.
+- **user_settings** — `skill_match_threshold`, `semantic_text_match_threshold` (0–1,
+  default 0.5), `compatibility_score_threshold` (default 70),
+  `curator_time_period_minutes` XOR `curator_job_limit`, `time_delay_seconds`.
+- **social_media**, **work_eligibility**, **experiences** (+ **experience_highlights**),
+  **educations**, **additional_context_entries**, **user_documents** — one-to-many children
+  of `users`.
+- **skills** (`name`, `type`) + **user_skills**; **roles** (`name`) + **user_roles** —
+  canonical dictionaries with many-to-many joins.
+- **jobs** — every scraped posting (unique on `source`+`link`): `title`, `company`,
+  `location`, `date_posted`, `description`, `status`, `description_embedding vector(384)`.
+- **curated_jobs** — per-user dashboard queue: FKs to `users` + `jobs`, `semantic_score`,
+  `overall_match_score`, the four criterion scores, and a `status` for soft delete.
+- **resumes** — generated `latex_content` (+ `pdf_path`/`docx_path`), `ats_score`, `version`.
+- **scrape_runs** — curator telemetry; **schema_migrations** — applied versions.
+
+Embeddings: `vector(384)`, sized for the open-source model `all-MiniLM-L6-v2`. Cosine
+similarity uses the pgvector `<=>` operator, with an HNSW index (`vector_cosine_ops`) on
+`jobs.description_embedding`.
+
 ---
 
 ## Algorithm Details

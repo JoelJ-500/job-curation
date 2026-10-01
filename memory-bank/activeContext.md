@@ -6,27 +6,32 @@
 ## Current State
 - Repository initialized with: `DESIGN.md` (master design doc), `.clinerules/rules.md`,
   `Dockerfile` (Python 3.11 multi-stage), `README.md`, `commands.txt`, `.gitignore`.
-- Git: branch `main`, single "Initial commit" (`f5e2f69`); new files currently untracked.
-- **Memory Bank initialized** from `DESIGN.md` (this task). No application source code
-  exists yet — the project is at **M0 (scaffolding)**.
-- No dependency manifest (`requirements.txt`/`pyproject.toml`), no Postgres setup, no React
-  app yet.
+- **Postgres + pgvector database is up and verified** (M0): `docker-compose.yml` runs
+  `pgvector/pgvector:pg16` as `job_curation_db`; the normalized schema in `db/schema.sql`
+  (18 tables, HNSW index, `updated_at` triggers) applies on first start, and
+  `db/smoke_test.sql` passes. Embeddings are `vector(384)` for `all-MiniLM-L6-v2`.
+- Git: branch `main`; the new DB files are currently untracked.
+- **Memory Bank initialized** from `DESIGN.md`. No application source code exists yet — the
+  project is at **M0 (scaffolding)**.
+- No general dependency manifest (`requirements.txt`/`pyproject.toml`) yet (DB deps are in
+  `requirements-db.txt`); no React app yet.
 
 ## Current Focus
-Bootstrap the Memory Bank and align on the first build steps. The design is fully
-specified for the core pipeline; the immediate need is to turn it into a runnable skeleton.
+The database foundation is complete and verified. Next is scaffolding the backend and
+implementing **Agent 1 (Acquire User Data)** on top of the existing schema.
 
 ## Immediate Next Steps (recommended order)
-1. **Confirm open technical decisions with the user** (blocking for design-consistent code):
-   - LLM provider + model, and embedding model.
-   - LangChain storage integration for the candidate profile store.
+1. **Confirm remaining open technical decisions with the user** (blocking for
+   design-consistent code):
+   - LLM provider + model (embedding resolved: `all-MiniLM-L6-v2`, `vector(384)`).
    - LaTeX→PDF toolchain (local `latexmk`/`pdflatex`) and `.docx` export (e.g., Pandoc).
    - React build tooling (Vite recommended) and styling library.
    - Clarify "Skill Match threshold" vs. "Semantic Text Match" threshold.
 2. **Scaffold the backend** — package layout (e.g., `app/agents`, `app/models`,
    `app/services`, `app/api`), add `requirements.txt`/`pyproject.toml` with pinned,
    non-deprecated versions (langchain, langgraph, pydantic, psycopg + pgvector, selenium,
-   scrapy, fastapi or similar), and wire Postgres vector store config.
+   scrapy, fastapi or similar), and wire the Postgres vector store (`langchain-postgres`)
+   to the existing schema.
 3. **Implement Agent 1** — Pydantic models (`CandidateProfile`, `WorkExp`) matching the
    schema in `systemPatterns.md`, ingest/normalize uploads, extraction chain with the
    design's prompt, and profile persistence.
@@ -54,6 +59,11 @@ specified for the core pipeline; the immediate need is to turn it into a runnabl
 - Respect the one-page / single-column / standard-header ATS formatting constraints.
 
 ## Recent Changes
+- 2026-10-01: Added the Postgres + pgvector database: `docker-compose.yml`, `db/schema.sql`
+  (normalized 18-table schema), `db/README.md`, `db/smoke_test.sql`, `requirements-db.txt`,
+  `.env`/`.env.example`; container verified healthy and the smoke test passes. Updated
+  `DESIGN.md`'s schema section and Memory Bank (`systemPatterns`, `techContext`, `progress`,
+  `activeContext`).
 - 2026-01-10: Created `memory-bank/` and populated `projectbrief.md`, `productContext.md`,
   `systemPatterns.md`, `techContext.md`, `progress.md`, `activeContext.md`; added Memory
   Bank instructions to `.clinerules/`.

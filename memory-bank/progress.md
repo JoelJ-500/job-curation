@@ -32,16 +32,22 @@
 ## Repo Artifacts Status
 | Artifact | Status | Notes |
 | --- | --- | --- |
-| `DESIGN.md` | ✅ | Master design doc (284 lines) |
+| `DESIGN.md` | ✅ | Master design doc (382 lines; schema section normalized) |
 | `.clinerules/rules.md` | ✅ | Primary libraries + conventions |
 | `Dockerfile` | 🟡 | Multi-stage Python 3.11; only installs `langchain`, `langgraph` |
 | `commands.txt` | ✅ | Docker exec instructions (gitignored) |
 | `README.md` | ✅ | One-line description |
 | `memory-bank/` | ✅ | This Memory Bank (initialized from design doc) |
+| `docker-compose.yml` | ✅ | Postgres 16 + pgvector service (`job_curation_db`) |
+| `db/schema.sql` | ✅ | Normalized schema (single source of truth) |
+| `db/README.md` | ✅ | DB usage + entity overview |
+| `db/smoke_test.sql` | ✅ | Rollback smoke test for the schema |
+| `.env.example` / `.env` | ✅ | DB connection settings (`.env` gitignored) |
+| `requirements-db.txt` | ✅ | `psycopg[binary]`, `pgvector` |
 | Backend source code | ⬜ | Not started |
 | Frontend (React) source | ⬜ | Not started |
 | `requirements.txt` / `pyproject.toml` | ⬜ | Not present |
-| Postgres Vector DB setup / schema | ⬜ | Not present |
+| Postgres Vector DB setup / schema | ✅ | Applied automatically on container start |
 | LangGraph agent graph | ⬜ | Not started |
 
 ## What Is Left To Build (High Level)
@@ -57,17 +63,19 @@
    Main Dashboard (ranked jobs + resumes + apply links + delete).
 6. **Orchestration** — LangGraph graph wiring the agents, background/scheduled curator runs,
    time-delay anti-bot handling.
-7. **Persistence** — Postgres Vector DB schema for profiles, jobs, embeddings, and queues.
+7. **Persistence** — ✅ Postgres Vector DB schema for profiles, jobs, embeddings, and
+   queues (see `db/schema.sql`); connection helpers still to add with the backend.
 8. **Testing & validation** — unit tests for extraction, filters, scoring, and resume output;
    LaTeX compilation checks.
 
 ## Open Decisions To Resolve Before/While Building
-- LLM provider + model; embedding model.
-- LangChain storage integration for the profile store.
+- LLM provider + model (embedding model resolved: `all-MiniLM-L6-v2`, `vector(384)`).
 - LaTeX→PDF toolchain and `.docx` generation approach.
 - React build tooling and styling library.
-- Concrete Postgres vector store schema and how job/profile embeddings are keyed.
-- Mapping between "Skill Match threshold" and "Semantic Text Match" threshold.
+- Mapping between "Skill Match threshold" (skill overlap count) and "Semantic Text Match"
+  threshold (embedding cosine) — both persisted in `user_settings`.
+- Concrete `langchain-postgres` `PGVectorStore` wiring against the `jobs`/`users` vector
+  columns (added with the agent code).
 
 ## Milestones (Proposed)
 - **M0** — Scaffolding + Memory Bank (this doc).

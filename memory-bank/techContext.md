@@ -47,7 +47,9 @@
   compatibility score (weighted rubric).
 - **LaTeX (Jake's Resume template)** for resumes — chosen because it is single-column,
   parser-friendly, and deterministic for ATS.
-- **Postgres pgvector-style vector DB** for long-term storage of profiles/jobs/embeddings.
+- **PostgreSQL 16 + pgvector** (Docker container `job_curation_db`) for long-term storage
+  of profiles/jobs/embeddings. Embeddings are `vector(384)`, sized for the open-source model
+  `all-MiniLM-L6-v2`. Schema in `db/schema.sql`; see `db/README.md`.
 
 ## Development Setup
 - **Containerized** via `Dockerfile` (multi-stage build: builder + runtime).
@@ -58,7 +60,12 @@
 - **Commands (`commands.txt`):**
   - Run docker image: `docker exec -it <container name> bash`
 - **Git:** repository `origin: https://github.com/JoelJ-500/job-curation.git`, branch `main`.
-  `.gitignore` currently ignores `commands.txt`.
+  `.gitignore` currently ignores `commands.txt` and `.env`.
+- **Database (Docker Compose):** `docker-compose.yml` runs `pgvector/pgvector:pg16` as
+  `job_curation_db` on port `5432`, with `db/schema.sql` auto-applied on first start and a
+  named `pgdata` volume. Connection settings live in `.env` (see `.env.example`). Python DB
+  deps are in `requirements-db.txt` (`psycopg[binary]`, `pgvector`). Verified with
+  `db/smoke_test.sql`.
 
 ## Technical Constraints
 - **Context length management** is required to prevent hallucination — keep each agent's
@@ -79,9 +86,11 @@
   handling).
 
 ## Open Technical Questions
-- Which concrete LangChain storage integration is used for the candidate profile store
-  (the design says "whatever storage/database Langchain provides")?
-- Which LLM provider/model and embedding model will be used?
+- Concrete LangChain storage integration: **resolved** — Postgres + pgvector store
+  (`langchain-postgres` `PGVectorStore` will wrap the `jobs`/`users` vector columns when the
+  agents are built).
+- Embedding model: **resolved** — open-source `all-MiniLM-L6-v2` (`vector(384)`).
+- LLM provider/model still to confirm.
 - How will LaTeX be compiled to PDF (local `latexmk`/`pdflatex` vs. a service) and how will
   `.docx` export be produced (e.g., Pandoc)?
 - Exact React project layout, build tooling (Vite/CRA/Next), and styling library — not yet
