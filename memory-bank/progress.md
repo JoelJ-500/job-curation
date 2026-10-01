@@ -1,0 +1,79 @@
+# Progress: job-curation
+
+> What has already been specified vs. what is left to build.
+> Source of truth: `DESIGN.md`, repo state, `.clinerules/rules.md`.
+
+## Legend
+- ✅ Specified (design complete / artifacts exist)
+- 🟡 Partially specified (design exists, some decisions open)
+- ⬜ Not started (to build)
+
+## Specification Status (Design Doc: `DESIGN.md`)
+| Area | Status | Notes |
+| --- | --- | --- |
+| ATS bypass strategy & constraints | ✅ | 5 curated tips; informs algorithms |
+| 4-agent subprocess breakdown | ✅ | Acquire data → Curate → Resume → Dashboard |
+| Candidate profile schema (Pydantic) | ✅ | All fields + `WorkExp` defined |
+| Profile extraction prompt | ✅ | Verbatim prompt provided |
+| Job "data format" | ✅ | title, link, date, posting, ATS score |
+| Job board targets | ✅ | Hiring Cafe, Eluta (North America) |
+| Search filters | ✅ | role, age, location, yoe |
+| Embedding filter (threshold/cosine) | ✅ | Default 0.5, 0–1 range |
+| LLM compatibility rubric + JSON output | ✅ | Weights 50/25/15/10; strict JSON schema |
+| Priority queue rules | ✅ | Threshold default 70, sorted desc |
+| Resume Builder prompt (full) | ✅ | Jake's template + ATS rules |
+| UI layout (Settings / Profile / Dashboard) | ✅ | Fields & behaviors described |
+| Multi-agent design principles | ✅ | Agent = object; context-length discipline |
+| Telemetrics, application tracker | 🟡 | Listed as "Future Improvements" only |
+| Autonomous site-scanning agent | 🟡 | Future; noted token-heavy |
+| GitHub job repo ingestion | 🟡 | Future |
+| Regex/structured extraction to cut tokens | 🟡 | Future |
+
+## Repo Artifacts Status
+| Artifact | Status | Notes |
+| --- | --- | --- |
+| `DESIGN.md` | ✅ | Master design doc (284 lines) |
+| `.clinerules/rules.md` | ✅ | Primary libraries + conventions |
+| `Dockerfile` | 🟡 | Multi-stage Python 3.11; only installs `langchain`, `langgraph` |
+| `commands.txt` | ✅ | Docker exec instructions (gitignored) |
+| `README.md` | ✅ | One-line description |
+| `memory-bank/` | ✅ | This Memory Bank (initialized from design doc) |
+| Backend source code | ⬜ | Not started |
+| Frontend (React) source | ⬜ | Not started |
+| `requirements.txt` / `pyproject.toml` | ⬜ | Not present |
+| Postgres Vector DB setup / schema | ⬜ | Not present |
+| LangGraph agent graph | ⬜ | Not started |
+
+## What Is Left To Build (High Level)
+1. **Project scaffolding** — backend package structure, dependency manifest, frontend app.
+2. **Agent 1 (Acquire User Data)** — file ingestion, text normalization, Pydantic extraction,
+   profile persistence, and the editable profile form (front-end + API).
+3. **Agent 2 (Job Curation)** — Selenium/Scrapy scrapers for Hiring Cafe & Eluta, queue
+   builder sorted by age, embedding filter (LangChain + Postgres vector store), LLM
+   compatibility scorer, priority queue builder.
+4. **Agent 3 (Resume Builder)** — resume-generation chain, LaTeX output, PDF (and optional
+   `.docx`) compilation.
+5. **Front-end** — Settings page (thresholds + hover help), Profile form (edit/reupload),
+   Main Dashboard (ranked jobs + resumes + apply links + delete).
+6. **Orchestration** — LangGraph graph wiring the agents, background/scheduled curator runs,
+   time-delay anti-bot handling.
+7. **Persistence** — Postgres Vector DB schema for profiles, jobs, embeddings, and queues.
+8. **Testing & validation** — unit tests for extraction, filters, scoring, and resume output;
+   LaTeX compilation checks.
+
+## Open Decisions To Resolve Before/While Building
+- LLM provider + model; embedding model.
+- LangChain storage integration for the profile store.
+- LaTeX→PDF toolchain and `.docx` generation approach.
+- React build tooling and styling library.
+- Concrete Postgres vector store schema and how job/profile embeddings are keyed.
+- Mapping between "Skill Match threshold" and "Semantic Text Match" threshold.
+
+## Milestones (Proposed)
+- **M0** — Scaffolding + Memory Bank (this doc).
+- **M1** — Profile acquisition + extraction working end-to-end.
+- **M2** — Scraping + embedding filter producing a raw queue.
+- **M3** — LLM scoring + priority queue.
+- **M4** — Resume Builder producing compilable one-page LaTeX.
+- **M5** — Front-end dashboard + settings + profile form.
+- **M6** — Background orchestration + anti-bot delay.
