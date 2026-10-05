@@ -271,6 +271,15 @@ Then follow every instruction in the RULES section below to produce the final La
 
 * **Main Dashboard:** Dashboard containing all the final curated jobs along with their generated recommended resumes(in latex), with a link to the direct job posting so they can apply. Users may also delete job postings. 
 
+Agent 1 implementation (built — `app/`):
+- Backend: FastAPI + psycopg 3 + LangChain (`langchain-groq`, Groq), run as the `backend` compose service (port 8000, same network as `db`).
+- Pipeline: upload documents -> per-file conversion to clean plain text (pypdf for PDFs, python-docx for DOCX, Groq vision for images and scanned PDFs rendered to PNG with PyMuPDF, direct read for text/code) -> deterministic noise removal (`app/agents/text_cleaning.py`) -> Pydantic + LLM structured extraction (`CandidateProfile` with per-field prompts) -> transactional write to Postgres.
+- Groq models: `openai/gpt-oss-120b` for extraction/text (configurable via `GROQ_MODEL`) and `qwen/qwen3.8-27b` for vision (configurable via `GROQ_VISION_MODEL`), because GPT-OSS is text-only; `GROQ_API_KEY` read from the root `.env`.
+- Agent 1 runs in a background task when documents are uploaded and when "Re-run extraction" is pressed; the UI polls `GET /api/profile/status`.
+- Extraction replaces the document-derived profile each run (documents are the source of truth); user `user_settings` and uploaded documents are untouched.
+- "Save profile" (`PUT /api/profile`) is a diff-aware upsert: only changed `users` columns and only changed/added/removed child rows are written; canonical `skills`/`roles` are reused via upsert.
+- Verified end-to-end: `.txt` + code file upload -> fields filled (skills from the code file merged in) across all profile tables -> edit/save updates only what changed -> delete + re-run replaces cleanly. Frontend can now run against the real API (`VITE_USE_MOCK_API=false`).
+
 Frontend implementation (User Profile page — built):
 - Stack: React + TypeScript + Vite + React Router + MUI; forms via react-hook-form. App in `frontend/`.
 - Shared app shell with routed pages (`/profile`, `/settings`, `/dashboard`) so Settings and Dashboard slot in later.

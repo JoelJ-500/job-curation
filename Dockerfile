@@ -10,9 +10,10 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Install dependencies
+# Install dependencies from the backend requirements file
+COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir langchain langgraph
+    pip install --no-cache-dir -r /tmp/requirements.txt
 
 # Runtime Stage
 FROM python:3.11-slim AS runtime

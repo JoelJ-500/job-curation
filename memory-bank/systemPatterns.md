@@ -113,6 +113,38 @@ similarity uses the pgvector `<=>` operator, with an HNSW index (`vector_cosine_
 
 ---
 
+## Agent 1 — Acquiring User Data (implemented)
+Code lives in `app/` (FastAPI + psycopg + LangChain). Pipeline: the user uploads
+documents via the UI -> each file is converted to clean plain text -> a single
+`CandidateProfile` is extracted with a Groq LLM using Pydantic structured output
+-> the profile is written transactionally to Postgres.
+
+- **Ingestion** (`app/agents/document_ingest.py`): PDF via pypdf; scanned/image-only
+  PDFs are rendered to PNG with PyMuPDF and read by the Groq vision model; DOCX via
+  python-docx; images via Groq vision; text/code read directly (code keeps indentation).
+- **Normalisation** (`app/agents/text_cleaning.py`): deterministic removal of
+  non-semantic content (page numbers, rules, boilerplate) and whitespace collapse.
+- **Extraction** (`app/agents/profile_extractor.py`): `ChatGroq`
+  (`openai/gpt-oss-120b`) + `.with_structured_output(CandidateProfile,
+  method="json_schema")` using the design's synthesis prompt; per-field instructions
+  live in the Pydantic schema (`app/models/profile.py`). Missing fields remain `null`.
+- **Persistence** (`app/agents/user_data_agent.py` + `app/db/repository.py`):
+  writes `users`, `social_media`, `work_eligibility`, `skills`+`user_skills`,
+  `roles`+`user_roles`, `experiences`+`experience_highlights`, `educations`,
+  `additional_context_entries`. Each extraction run replaces the document-derived
+  profile (`clear_profile`) so re-runs never duplicate rows.
+- **Save edits**: `PUT /api/profile` is a diff-aware upsert (only changed columns
+  / rows are touched; canonical skills/roles are reused via `ON CONFLICT`).
+- **Status**: in-memory holder (`app/services/extraction_state.py`) polled by the UI.
+- **Embedding** (`users.profile_embedding`): deferred behind
+  `ENABLE_PROFILE_EMBEDDING` (Agent 2 concern).
+
+API (matches the frontend contract exactly): `GET/PUT /api/profile`,
+`POST/GET /api/profile/documents`, `DELETE /api/profile/documents/{id}`,
+`POST /api/profile/extract`, `GET /api/profile/status`.
+
+---
+
 ## Frontend Architecture (User Profile UI)
 React + TypeScript + Vite + React Router + MUI, in `frontend/`.
 

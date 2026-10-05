@@ -18,5 +18,26 @@ services:
       timeout: 5s
       retries: 10
 
+  backend:
+    build: .
+    container_name: job_curation_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      # Inside the compose network the database is reachable by its service name.
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      UPLOAD_DIR: /app/data/uploads
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
 volumes:
   pgdata:

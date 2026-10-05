@@ -2,3 +2,6 @@ commands.txt
 .env
 node_modules/
 dist/
+data/uploads/
+__pycache__/
+*.pyc

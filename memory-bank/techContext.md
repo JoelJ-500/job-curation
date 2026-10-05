@@ -13,6 +13,20 @@
 - **Postgres Vector Database** — long-term data storage (candidate profiles, job data,
   embeddings).
 
+## Backend (implemented — `app/`)
+- **FastAPI** (uvicorn) API + **psycopg 3** + **LangChain** (`langchain-groq`).
+- Runs as the `backend` service in `docker-compose.yml` (port `8000`, joined to the
+  same network as `db`, repo mounted at `/app`). Start everything with
+  `docker compose up -d --build`.
+- LLM: **Groq**. Text model **`openai/gpt-oss-120b`** (configurable via `GROQ_MODEL`)
+  for profile extraction and reading text files; vision model **`qwen/qwen3.8-27b`**
+  (configurable via `GROQ_VISION_MODEL`) for images and scanned PDFs, because GPT-OSS
+  is text-only. API key in `GROQ_API_KEY` (root `.env`).
+- Backend dependencies are in `requirements.txt`
+  (fastapi, uvicorn, python-multipart, pydantic, pydantic-settings, python-dotenv,
+  psycopg[binary], pgvector, langchain, langchain-core, langchain-groq,
+  pypdf, python-docx, pymupdf).
+
 ## Language & Runtime
 - **Python 3.11** (base image `python:3.11-slim`).
 - Backend dependencies installed via pip (currently `langchain` and `langgraph` in the
@@ -51,6 +65,9 @@
 - **PostgreSQL 16 + pgvector** (Docker container `job_curation_db`) for long-term storage
   of profiles/jobs/embeddings. Embeddings are `vector(384)`, sized for the open-source model
   `all-MiniLM-L6-v2`. Schema in `db/schema.sql`; see `db/README.md`.
+  `user_documents` also stores `size_bytes` and the normalized `extracted_text` per file.
+- **Backend (Docker), `backend` service** — connection defaults to `POSTGRES_HOST=db`,
+  `POSTGRES_PORT=5432` (overridden in `docker-compose.yml`).
 
 ## Development Setup
 - **Containerized** via `Dockerfile` (multi-stage build: builder + runtime).
@@ -63,6 +80,8 @@
   - Frontend (run on the host — the dev container has no Node): `cd frontend && npm install`,
     then `npm run dev` (http://localhost:5173) or `npm run build` (tsc type-check + Vite).
     Host Node is v18.19, so Vite is pinned to 5.x (Vite 7 needs Node >= 20.19).
+  - Backend (Docker): `docker compose up -d --build` (starts `db` + `backend`).
+    API at http://localhost:8000 (health: `GET /api/health`).
   - Frontend env flags (`.env`): `VITE_USE_MOCK_API` (mock data layer on/off),
     `VITE_API_BASE_URL` (defaults to `/api`, proxied to the backend by Vite).
 - **Git:** repository `origin: https://github.com/JoelJ-500/job-curation.git`, branch `main`.
@@ -96,7 +115,8 @@
   (`langchain-postgres` `PGVectorStore` will wrap the `jobs`/`users` vector columns when the
   agents are built).
 - Embedding model: **resolved** — open-source `all-MiniLM-L6-v2` (`vector(384)`).
-- LLM provider/model still to confirm.
+- LLM provider/model: **resolved** — **Groq** (`openai/gpt-oss-120b` for text,
+  `qwen/qwen3.8-27b` for vision), replacing the earlier Google Gemini choice.
 - How will LaTeX be compiled to PDF (local `latexmk`/`pdflatex` vs. a service) and how will
   `.docx` export be produced (e.g., Pandoc)?
 - Exact React project layout, build tooling (Vite/CRA/Next), and styling library — not yet

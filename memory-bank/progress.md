@@ -45,15 +45,19 @@
 | `.env.example` / `.env` | ✅ | DB connection settings (`.env` gitignored) |
 | `requirements-db.txt` | ✅ | `psycopg[binary]`, `pgvector` |
 | `frontend/` (React app) | 🟡 | Scaffolded: app shell + **User Profile page** done; Settings/Dashboard placeholders. Mock data layer; not yet wired to the backend |
-| Backend source code | ⬜ | Not started |
-| `requirements.txt` / `pyproject.toml` | ⬜ | Not present |
+| `requirements.txt` | ✅ | Backend deps (FastAPI, psycopg, LangChain, langchain-groq, pypdf, python-docx, pymupdf) |
+| `app/` (backend + Agent 1) | ✅ | FastAPI + psycopg + LangChain; document ingestion, extraction, persistence |
+| Backend source code | ✅ | See `app/` (Agent 1 implemented) |
 | Postgres Vector DB setup / schema | ✅ | Applied automatically on container start |
 | LangGraph agent graph | ⬜ | Not started |
 
 ## What Is Left To Build (High Level)
 1. **Project scaffolding** — backend package structure, dependency manifest, frontend app.
-2. **Agent 1 (Acquire User Data)** — file ingestion, text normalization, Pydantic extraction,
-   profile persistence, and the editable profile form (front-end + API).
+2. **Agent 1 (Acquire User Data)** — ✅ Implemented: file ingestion + text
+   normalization, Pydantic extraction (Groq `openai/gpt-oss-120b`; vision via
+   `qwen/qwen3.8-27b`), profile persistence,
+   document upload + extraction API, and the editable profile form now talks to the real
+   API. Verified end-to-end. Profile embedding deferred behind a flag.
 3. **Agent 2 (Job Curation)** — Selenium/Scrapy scrapers for Hiring Cafe & Eluta, queue
    builder sorted by age, embedding filter (LangChain + Postgres vector store), LLM
    compatibility scorer, priority queue builder.
@@ -72,14 +76,12 @@
 ## Open Decisions To Resolve Before/While Building
 - LLM provider + model (embedding model resolved: `all-MiniLM-L6-v2`, `vector(384)`).
 - LaTeX→PDF toolchain and `.docx` generation approach.
-- Frontend build tooling + styling: **resolved** — Vite 5 + TypeScript + React Router + MUI,
-  forms via react-hook-form (`frontend/`).
-- Backend framework for the API (FastAPI proposed) and where uploaded document files are
-  stored (DB `bytea` vs filesystem path) — to decide with Agent 1.
 - Mapping between "Skill Match threshold" (skill overlap count) and "Semantic Text Match"
   threshold (embedding cosine) — both persisted in `user_settings`.
 - Concrete `langchain-postgres` `PGVectorStore` wiring against the `jobs`/`users` vector
-  columns (added with the agent code).
+  columns (Agent 2).
+- LLM provider/model: **resolved** — **Groq** (`openai/gpt-oss-120b` text model,
+  `qwen/qwen3.8-27b` vision model), replacing Google Gemini.
 
 ## Milestones (Proposed)
 - **M0** — Scaffolding + Memory Bank (this doc).

@@ -248,6 +248,7 @@ CREATE TABLE IF NOT EXISTS user_documents
     file_name      TEXT NOT NULL,
     mime_type      TEXT,
     storage_path   TEXT,
+    size_bytes     BIGINT,
     extracted_text TEXT,
     created_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );

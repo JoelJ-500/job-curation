@@ -17,13 +17,19 @@
   `requirements-db.txt`).
 - **Frontend User Profile UI built**: React + TS + Vite + MUI app in `frontend/` with an app
   shell (Profile/Settings/Dashboard routes), a document uploader that triggers extraction,
-  and the full editable profile form mirroring the DB. Runs against a mock data layer until
-  the backend exists (`VITE_USE_MOCK_API`).
+  and the full editable profile form mirroring the DB.
+- **Agent 1 (backend) implemented and verified** (`app/`): FastAPI + psycopg + LangChain
+  (Groq — `openai/gpt-oss-120b` for text, `qwen/qwen3.8-27b` for vision). Ran as a
+  `backend` compose service on port 8000. Uploading
+  documents converts them to clean text, extracts a `CandidateProfile` via Pydantic +
+  LLM, and writes it transactionally to Postgres; `PUT /api/profile` is a diff-aware upsert.
+  End-to-end tested through the API (upload -> extract -> edit/save -> delete -> re-run).
+  The frontend now runs against the real API (`VITE_USE_MOCK_API=false`).
 
 ## Current Focus
-The database schema and the User Profile UI are complete. Next is scaffolding the Python
-backend (proposed FastAPI) and implementing **Agent 1 (Acquire User Data)** so the upload →
-extract flow becomes real, then wiring the frontend to it.
+Agent 1 (user data acquisition) is implemented and verified end-to-end against the real
+API and database. Next: **Agent 2 (Job Curation)** — scrapers, embedding filter, LLM
+scoring, and the priority queue — plus wiring the remaining UI pages (Settings, Dashboard).
 
 ## Immediate Next Steps (recommended order)
 1. **Confirm remaining open technical decisions with the user** (blocking for
@@ -65,6 +71,20 @@ extract flow becomes real, then wiring the frontend to it.
 - Respect the one-page / single-column / standard-header ATS formatting constraints.
 
 ## Recent Changes
+- 2026-10-05: **Switched Agent 1's LLM from Google Gemini to Groq** (the Gemini
+  `gemini-3.5-flash` calls were all failing). Extraction now uses `langchain-groq` with
+  `openai/gpt-oss-120b` (structured output via `method="json_schema"`, `max_tokens=16384`,
+  `reasoning_effort="low"`); images and scanned PDFs route to the Groq vision model
+  `qwen/qwen3.8-27b` (scanned PDFs rendered to PNG with PyMuPDF, capped at 3 pages).
+  Added config `GROQ_API_KEY`/`GROQ_MODEL`/`GROQ_VISION_MODEL`; `requirements.txt` now
+  installs `langchain-groq` + `pymupdf` (dropped `langchain-google-genai`). Verified
+  end-to-end through the API: text PDF, image, and scanned PDF all extract successfully.
+- 2026-10-01: Implemented **Agent 1** (`app/`): FastAPI + psycopg 3 + LangChain
+  (`langchain-google-genai`, `gemini-3.5-flash`). Added a `backend` docker-compose service
+  (port 8000), `requirements.txt`, backend config, DB repository (diff-aware save + clear),
+  agents (document ingest, text cleaning, profile extractor, orchestrator), the profile /
+  documents API, and the `size_bytes` column on `user_documents`. Verified end-to-end and
+  flipped the frontend to the real API (`VITE_USE_MOCK_API=false`).
 - 2026-10-01: Built the **User Profile UI** in `frontend/` (Vite 5 + React + TS + React
   Router + MUI + react-hook-form): app shell with routed Profile/Settings/Dashboard, a
   document uploader that triggers extraction and refills the form, and the full editable
