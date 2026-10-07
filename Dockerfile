@@ -21,6 +21,21 @@ FROM python:3.11-slim AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+# Chromium + ChromeDriver for the Selenium scrapers (Agent 2).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        chromium \
+        chromium-driver \
+        fonts-liberation \
+        fonts-noto-color-emoji \
+        libnss3 \
+        libatk-bridge2.0-0 \
+        libgbm1 \
+        libasound2 \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+
 # Copy virtual environment from builder stage
 ENV VIRTUAL_ENV=/opt/venv
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV

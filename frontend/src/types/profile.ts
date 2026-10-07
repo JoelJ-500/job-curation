@@ -93,6 +93,24 @@ export interface ExtractionStatus {
   message?: string;
 }
 
+export interface UserSettings {
+  curator_job_limit: number | null;
+  curator_time_period_minutes: number | null;
+  skill_match_threshold: number;
+  semantic_text_match_threshold: number;
+  compatibility_score_threshold: number;
+  time_delay_seconds: number;
+}
+
+export type CurationState = 'idle' | 'running' | 'done' | 'error';
+
+export interface CurationStatus {
+  state: CurationState;
+  message?: string;
+  jobs_scraped: number;
+  output_file?: string | null;
+}
+
 // A fresh, empty profile. Returned as a factory so callers never share a
 // mutable reference across resets.
 export function createEmptyProfile(): UserProfile {

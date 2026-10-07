@@ -76,6 +76,13 @@ Develop web scraping functionality to scrape from the following sites:
 - Hiring cafe  
 - Eluta
 
+Step 1 implementation (built — `app/scrapers/`, `app/agents/curation_agent.py`):
+- The Settings page lets the user set **how many postings to gather per run** (`curator_job_limit`, default 10); the run stops once the queue reaches this number. **Temporary:** the limit currently counts **scraped** postings — change it to count postings surviving the cosine-similarity + LLM steps once Steps 2–4 are implemented.
+- Two **unique Selenium setups** (Selenium 4 + Chromium in the backend container), one per site (`ElutaScraper`, `HiringCafeScraper`), each paired with a Groq scraping agent that maps the profile (roles, location, yoe, language) onto the site's filter controls and can parse changed HTML.
+- A **Start curation** button runs both site workers **concurrently** against a shared, limit-capped queue, so the scrape order is never static and an exhausted site falls through to the other.
+- Each job is written as **title, link, date of posting, job posting (massive string)** to a per-run text file (`data/queue/`) and to the `jobs` table.
+- HiringCafe (`hiringcafe.com/classic`) is currently blocked by a **Cloudflare challenge**; Eluta scrapes reliably.
+
 (North American focused, can add more sites later on, or autonomous agent)
 
 The search functionality must:  
@@ -88,7 +95,10 @@ Improv Notes for future:
 \- Autonomous Agent: Create a separate agent that scan scour any job posting site a user adds dynamically ie figure out and navigate the layout of any job site, Challenge- very token heavy.   
 \- Allow the user to paste in github job repos to pull from. 
 
-**Step 2: Filter down job postings with LangChain Embeddings \+ VectorStore:**   
+**Step 2- Check if each curated job is already in the database**
+Discard any scraped jobs that are already in the database or current queue
+
+**Step 3: Filter down job postings with LangChain Embeddings \+ VectorStore:**   
 Allow the user to set a “Semantic Text Match” threshold between 0 and 1, in the settings(by default 0.5). 
 
 For every job in the queue, run the elements in the “skills, education, yoe” attributes of the user profile and the job posting itself through an embedding model to get a vector value for each. Then run the result through a cosine similarity formula, calculating the angle between the vectors . 
@@ -97,7 +107,7 @@ If the score \>= “Semantic Text Match” threshold, keep the current job  in t
 
 This step will trim down the amount of job postings that need to be evaluated by the agent in the next step, saving token costs. 
 
-**Step 3: Filter down again, this time with LLM:**   
+**Step 4: Filter down again, this time with LLM:**   
 Use an agent to assess compatibility score of every job posting that passed Step 2, using the following prompt:
 
 You're a recruiter who has to assess how compatible the candidate’s profile is to the job posting  . Your job is to perform a deep semantic and contextual evaluation of a candidate's structured profile against a specific Job Description.

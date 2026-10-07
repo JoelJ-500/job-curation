@@ -27,35 +27,23 @@
   The frontend now runs against the real API (`VITE_USE_MOCK_API=false`).
 
 ## Current Focus
-Agent 1 (user data acquisition) is implemented and verified end-to-end against the real
-API and database. Next: **Agent 2 (Job Curation)** — scrapers, embedding filter, LLM
-scoring, and the priority queue — plus wiring the remaining UI pages (Settings, Dashboard).
+Agent 1 (user data acquisition) is implemented and verified end-to-end. **Agent 2 Step 1
+(gather job postings)** is now implemented and verified: a Settings field for "job
+postings per run" (default 10), a **Start curation** button, concurrent Selenium scrapers
+for Eluta (working) and HiringCafe (Cloudflare-blocked), scraping agents, a queue text
+file, and `jobs` persistence. Next: **Agent 2 Steps 2–4** (embeddings filter → LLM
+scoring → priority queue) and the Main Dashboard.
 
 ## Immediate Next Steps (recommended order)
-1. **Confirm remaining open technical decisions with the user** (blocking for
-   design-consistent code):
-   - LLM provider + model (embedding resolved: `all-MiniLM-L6-v2`, `vector(384)`).
-   - LaTeX→PDF toolchain (local `latexmk`/`pdflatex`) and `.docx` export (e.g., Pandoc).
-   - React build tooling (Vite recommended) and styling library.
-   - Clarify "Skill Match threshold" vs. "Semantic Text Match" threshold.
-2. **Scaffold the backend** — package layout (e.g., `app/agents`, `app/models`,
-   `app/services`, `app/api`), add `requirements.txt`/`pyproject.toml` with pinned,
-   non-deprecated versions (langchain, langgraph, pydantic, psycopg + pgvector, selenium,
-   scrapy, fastapi or similar), and wire the Postgres vector store (`langchain-postgres`)
-   to the existing schema.
-3. **Implement Agent 1** — Pydantic models (`CandidateProfile`, `WorkExp`) matching the
-   schema in `systemPatterns.md`, ingest/normalize uploads, extraction chain with the
-   design's prompt, and profile persistence.
-4. **Implement Agent 2 Step 1** — scrapers for Hiring Cafe and Eluta (HTML-first, Scrapy
-   fallback), queue sorted by posting age with the "job" data format.
-5. **Implement Agent 2 Steps 2–4** — embedding + cosine filter, LLM scoring chain with the
-   strict JSON contract, and priority queue builder.
-6. **Implement Agent 3** — resume-generation chain (Jake's template), LaTeX output, PDF +
-   optional `.docx`.
-7. **Build the React front-end** — 🟡 Profile form done (upload + editable form, mock data
-   layer). Remaining: wire the UI to the backend API contract, then Settings + Main Dashboard.
-8. **Orchestrate with LangGraph** — wire agents into a graph; support background/scheduled
-   curator runs and the configurable per-job time delay.
+1. **Agent 2 Step 2** — embedding + cosine filter (LangChain Embeddings + Postgres vector
+   store) with the `semantic_text_match_threshold`.
+2. **Agent 2 Step 3** — LLM compatibility scorer (strict JSON contract).
+3. **Agent 2 Step 4** — priority queue builder (`compatibility_score_threshold`), write to
+   `curated_jobs`; **move the run-limit check to count jobs surviving Steps 2–4**.
+4. **Unblock HiringCafe** — needs a stealth browser / residential proxy to pass Cloudflare.
+5. **Agent 3 (Resume Builder)** — Jake's template LaTeX, PDF + optional `.docx`.
+6. **Main Dashboard** — ranked curated jobs + resumes + apply links + delete.
+7. **Orchestrate with LangGraph** — wire agents into a graph; background/scheduled runs.
 
 ## Active Decisions / Assumptions
 - Treat `DESIGN.md` as the master spec (`.clinerules` refers to it as `SYSTEM_DESIGN.md`).
@@ -71,6 +59,17 @@ scoring, and the priority queue — plus wiring the remaining UI pages (Settings
 - Respect the one-page / single-column / standard-header ATS formatting constraints.
 
 ## Recent Changes
+- 2026-10-06: **Agent 2 Step 1 (gather job postings) built & verified.** Added a
+  "job postings per run" setting (default 10) + `GET/PUT /api/settings`; a **Start
+  curation** button + status on the Settings page; two concurrent Selenium scrapers
+  (`ElutaScraper` working, `HiringCafeScraper` Cloudflare-blocked) each with a unique
+  driver; scraping agents (`app/agents/scrape_agent.py`) that plan per-site filters and
+  offer an LLM HTML-parse fallback; a curation orchestrator
+  (`app/agents/curation_agent.py`) running both sites concurrently with a shared
+  limit-capped queue; and a queue text-file output (`data/queue/`) plus `jobs` /
+  `scrape_runs` persistence. Docker image now installs Chromium + ChromeDriver
+  (`chromium`/`chromium-driver`) and `selenium`. Verified end-to-end: a run gathered 10
+  Eluta postings with full posting text and wrote the queue file.
 - 2026-10-05: **Switched Agent 1's LLM from Google Gemini to Groq** (the Gemini
   `gemini-3.5-flash` calls were all failing). Extraction now uses `langchain-groq` with
   `openai/gpt-oss-120b` (structured output via `method="json_schema"`, `max_tokens=16384`,

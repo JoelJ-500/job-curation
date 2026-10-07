@@ -31,6 +31,12 @@ class Settings:
     # Files
     upload_dir: str
 
+    # Scraping (Selenium / Chromium)
+    chrome_binary: str
+    chromedriver_path: str
+    headless_browser: bool
+    queue_dir: str
+
     # Feature flags
     enable_profile_embedding: bool
 
@@ -62,6 +68,10 @@ def get_settings() -> Settings:
         groq_model=os.getenv("GROQ_MODEL", "openai/gpt-oss-120b"),
         groq_vision_model=os.getenv("GROQ_VISION_MODEL", "qwen/qwen3.8-27b"),
         upload_dir=os.getenv("UPLOAD_DIR", "/app/data/uploads"),
+        chrome_binary=os.getenv("CHROME_BIN", "/usr/bin/chromium"),
+        chromedriver_path=os.getenv("CHROMEDRIVER_PATH", "/usr/bin/chromedriver"),
+        headless_browser=_as_bool(os.getenv("HEADLESS_BROWSER"), True),
+        queue_dir=os.getenv("QUEUE_DIR", "/app/data/queue"),
         enable_profile_embedding=_as_bool(os.getenv("ENABLE_PROFILE_EMBEDDING"), False),
     )
 

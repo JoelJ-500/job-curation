@@ -145,6 +145,35 @@ API (matches the frontend contract exactly): `GET/PUT /api/profile`,
 
 ---
 
+## Agent 2 — Job Curation (Step 1 implemented)
+
+Step 1 (gather postings) is built; Steps 2–4 (embeddings → LLM scoring → priority
+queue) are still to come.
+
+- **Settings** (`app/api/settings.py`, `user_settings` table): the user sets **how many
+  postings to gather per run** (`curator_job_limit`, default 10). The run stops once the
+  queue reaches this number.
+- **Orchestration** (`app/agents/curation_agent.py`): `run_curation` runs the two site
+  workers **concurrently** (threads) against a shared, thread-safe, deduplicated queue
+  capped at the limit — so the scrape order is never static and an exhausted site yields
+  to the other. Scraped jobs are written to a text file and to the `jobs` table (a
+  `scrape_runs` row is logged per source).
+- **Scrapers** (`app/scrapers/`): `ElutaScraper` (working) and `HiringCafeScraper`
+  (Cloudflare-blocked); each owns a unique Selenium setup and paginates.
+- **Scraping agents** (`app/agents/scrape_agent.py`): `plan_searches` maps the profile
+  (roles, location, yoe, language) onto each site's controls via Groq structured output
+  (with a deterministic fallback); `parse_jobs_from_html` is an LLM fallback for changed
+  HTML layouts.
+- **Job format** written for each posting: **title, link, date of posting, job posting
+  (massive string)**, plus source/company/location.
+- **Endpoints**: `GET/PUT /api/settings`, `POST /api/curation/start`,
+  `GET /api/curation/status`.
+- **NOTE (temporary):** `curator_job_limit` currently counts **scraped** postings. Change
+  it to count the postings that survive the cosine-similarity + LLM evaluation steps once
+  Steps 2–4 are implemented.
+
+---
+
 ## Frontend Architecture (User Profile UI)
 React + TypeScript + Vite + React Router + MUI, in `frontend/`.
 

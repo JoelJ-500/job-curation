@@ -24,13 +24,35 @@
   is text-only. API key in `GROQ_API_KEY` (root `.env`).
 - Backend dependencies are in `requirements.txt`
   (fastapi, uvicorn, python-multipart, pydantic, pydantic-settings, python-dotenv,
-  psycopg[binary], pgvector, langchain, langchain-core, langchain-groq,
+  psycopg[binary], pgvector, langchain, langchain-core, langchain-groq, selenium,
   pypdf, python-docx, pymupdf).
+
+## Job-site scraping (Agent 2, Step 1 — implemented)
+- **Selenium 4 + Chromium 154 + ChromeDriver 154**, installed into the backend image
+  (`Dockerfile` apt-installs `chromium`/`chromium-driver`; env `CHROME_BIN`,
+  `CHROMEDRIVER_PATH`). Scrapers run **inside the backend container**, not on the host.
+- Two **unique Selenium setups** (independent driver/ChromeOptions/user-data-dir):
+  `HiringCafeScraper` and `ElutaScraper` (`app/scrapers/`), each paired with the
+  scraping agents in `app/agents/scrape_agent.py`.
+- `HEADLESS_BROWSER` (default true) toggles headless; `QUEUE_DIR` (default
+  `/app/data/queue`) holds the per-run queue text files.
+- **Eluta** is server-rendered and scrapes reliably (keywords `#f-ss-q`, location
+  `input[name=l]`, category via `filter-field`, sort `sort=post`, results
+  `div.organic-job`, full posting text from the `spl/<slug>` detail page, `pg` paging).
+- **HiringCafe** (`hiringcafe.com/classic`) loads in Selenium (search box
+  `#query-search-v4`) but its search navigation is gated by a **Cloudflare challenge**;
+  fully automated scraping is currently blocked (headed/Xvfb and stealth patches did not
+  clear it). The scraper detects the challenge, logs it, and the curator falls back to
+  the other site. Bypassing this likely needs a stealth driver/residential proxy.
+
+## Scraper API endpoints (Step 1)
+- `GET/PUT /api/settings` — curator settings (incl. `curator_job_limit`, default 10).
+- `POST /api/curation/start`, `GET /api/curation/status` — start/poll a curation run.
 
 ## Language & Runtime
 - **Python 3.11** (base image `python:3.11-slim`).
-- Backend dependencies installed via pip (currently `langchain` and `langgraph` in the
-  Dockerfile).
+- Backend dependencies installed via pip from `requirements.txt` in the Docker builder
+  stage; the runtime stage apt-installs Chromium + ChromeDriver for Selenium.
 
 ## Project Rules & Conventions (`.clinerules/rules.md`)
 - Primary libraries/frameworks: LangChain, LangGraph, Selenium, Scrapy (fallback),
@@ -108,7 +130,8 @@
 - An **LLM provider** (for extraction, scoring, and resume generation).
 - An **embedding model** for the semantic filter.
 - **Job board access** to Hiring Cafe and Eluta (may require Selenium/Scrapy + anti-bot
-  handling).
+  handling). Eluta works via Selenium; HiringCafe's **Cloudflare** challenge currently
+  blocks automated access.
 
 ## Open Technical Questions
 - Concrete LangChain storage integration: **resolved** — Postgres + pgvector store

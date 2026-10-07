@@ -6,15 +6,17 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import documents, profile
+from app.api import curation, documents, profile
+from app.api import settings as settings_api
 from app.config import settings
 from app.db.connection import check_connection
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    """Ensure the upload directory exists and the database is reachable."""
+    """Ensure the working directories exist and the database is reachable."""
     Path(settings.upload_dir).mkdir(parents=True, exist_ok=True)
+    Path(settings.queue_dir).mkdir(parents=True, exist_ok=True)
     check_connection()
     yield
 
@@ -32,6 +34,8 @@ app.add_middleware(
 
 app.include_router(profile.router)
 app.include_router(documents.router)
+app.include_router(settings_api.router)
+app.include_router(curation.router)
 
 
 @app.get("/api/health")

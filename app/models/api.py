@@ -83,3 +83,21 @@ class UserDocumentResponse(BaseModel):
 class ExtractionStatusResponse(BaseModel):
     state: str
     message: str | None = None
+
+
+class UserSettings(BaseModel):
+    """Per-user curator settings (mirrors the `user_settings` table)."""
+
+    curator_job_limit: int | None = 10
+    curator_time_period_minutes: int | None = None
+    skill_match_threshold: int = 3
+    semantic_text_match_threshold: float = 0.5
+    compatibility_score_threshold: int = 70
+    time_delay_seconds: float = 0
+
+
+class CurationStatusResponse(BaseModel):
+    state: str
+    message: str | None = None
+    jobs_scraped: int = 0
+    output_file: str | None = None

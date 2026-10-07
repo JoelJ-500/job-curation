@@ -533,3 +533,168 @@ def set_document_text(connection: Connection, document_id: int, extracted_text: 
         "UPDATE user_documents SET extracted_text = %s WHERE id = %s", (extracted_text, document_id)
     )
     connection.commit()
+
+
+# ---------------------------------------------------------------------------
+# Curator settings
+# ---------------------------------------------------------------------------
+
+DEFAULT_SETTINGS: dict[str, Any] = {
+    "curator_job_limit": 10,
+    "curator_time_period_minutes": None,
+    "skill_match_threshold": 3,
+    "semantic_text_match_threshold": 0.5,
+    "compatibility_score_threshold": 70,
+    "time_delay_seconds": 0.0,
+}
+
+# Columns of user_settings that come from the UI.
+_SETTINGS_COLUMNS = [
+    "curator_job_limit",
+    "curator_time_period_minutes",
+    "skill_match_threshold",
+    "semantic_text_match_threshold",
+    "compatibility_score_threshold",
+    "time_delay_seconds",
+]
+
+
+def get_settings(connection: Connection, user_id: int) -> dict[str, Any]:
+    """Return the user's curator settings, falling back to the defaults."""
+    row = connection.execute(
+        """
+        SELECT curator_job_limit, curator_time_period_minutes,
+               skill_match_threshold, semantic_text_match_threshold,
+               compatibility_score_threshold, time_delay_seconds
+        FROM user_settings WHERE user_id = %s
+        """,
+        (user_id,),
+    ).fetchone()
+    if row is None:
+        return dict(DEFAULT_SETTINGS)
+    return {
+        "curator_job_limit": row["curator_job_limit"],
+        "curator_time_period_minutes": row["curator_time_period_minutes"],
+        "skill_match_threshold": row["skill_match_threshold"],
+        "semantic_text_match_threshold": float(row["semantic_text_match_threshold"]),
+        "compatibility_score_threshold": row["compatibility_score_threshold"],
+        "time_delay_seconds": float(row["time_delay_seconds"]),
+    }
+
+
+def save_settings(connection: Connection, user_id: int, data: dict[str, Any]) -> dict[str, Any]:
+    """Upsert the user's curator settings (only changed columns are overwritten)."""
+    values = dict(DEFAULT_SETTINGS)
+    for column in _SETTINGS_COLUMNS:
+        if column in data:
+            values[column] = data[column]
+
+    # The curator runs for a time period OR a job limit, never both.
+    if values["curator_job_limit"] is not None:
+        values["curator_time_period_minutes"] = None
+    elif values["curator_time_period_minutes"] is not None:
+        values["curator_job_limit"] = None
+
+    connection.execute(
+        """
+        INSERT INTO user_settings (
+            user_id, curator_job_limit, curator_time_period_minutes,
+            skill_match_threshold, semantic_text_match_threshold,
+            compatibility_score_threshold, time_delay_seconds
+        )
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        ON CONFLICT (user_id) DO UPDATE SET
+            curator_job_limit = EXCLUDED.curator_job_limit,
+            curator_time_period_minutes = EXCLUDED.curator_time_period_minutes,
+            skill_match_threshold = EXCLUDED.skill_match_threshold,
+            semantic_text_match_threshold = EXCLUDED.semantic_text_match_threshold,
+            compatibility_score_threshold = EXCLUDED.compatibility_score_threshold,
+            time_delay_seconds = EXCLUDED.time_delay_seconds
+        """,
+        (
+            user_id,
+            values["curator_job_limit"],
+            values["curator_time_period_minutes"],
+            values["skill_match_threshold"],
+            values["semantic_text_match_threshold"],
+            values["compatibility_score_threshold"],
+            values["time_delay_seconds"],
+        ),
+    )
+    connection.commit()
+    return get_settings(connection, user_id)
+
+
+# ---------------------------------------------------------------------------
+# Curator (scraping) helpers
+# ---------------------------------------------------------------------------
+
+
+def get_filter_inputs(connection: Connection, user_id: int) -> dict[str, Any]:
+    """Return the profile fields each job-site search is built from."""
+    user = connection.execute(
+        "SELECT location, language_preference, yoe FROM users WHERE id = %s",
+        (user_id,),
+    ).fetchone()
+    roles = connection.execute(
+        """
+        SELECT r.name
+        FROM roles r
+        JOIN user_roles ur ON ur.role_id = r.id
+        WHERE ur.user_id = %s
+        ORDER BY lower(r.name)
+        """,
+        (user_id,),
+    ).fetchall()
+    return {
+        "roles": [row["name"] for row in roles],
+        "location": user["location"] if user else None,
+        "language_preference": user["language_preference"] if user else None,
+        "yoe": float(user["yoe"]) if user and user["yoe"] is not None else None,
+    }
+
+
+def upsert_job(
+    connection: Connection,
+    source: str,
+    title: str,
+    link: str,
+    date_posted: Any,
+    description: str,
+) -> int:
+    """Insert a scraped job, refreshing duplicates on (source, link)."""
+    row = connection.execute(
+        """
+        INSERT INTO jobs (source, title, link, date_posted, description, status)
+        VALUES (%s, %s, %s, %s, %s, 'scraped')
+        ON CONFLICT (source, link) DO UPDATE SET
+            title = EXCLUDED.title,
+            date_posted = COALESCE(EXCLUDED.date_posted, jobs.date_posted),
+            description = EXCLUDED.description,
+            updated_at = now()
+        RETURNING id
+        """,
+        (source, title, link, date_posted, description),
+    ).fetchone()
+    connection.commit()
+    return row["id"]
+
+
+def start_scrape_run(connection: Connection, source: str) -> int:
+    """Open a scrape_runs telemetry row and return its id."""
+    row = connection.execute(
+        "INSERT INTO scrape_runs (source) VALUES (%s) RETURNING id", (source,)
+    ).fetchone()
+    connection.commit()
+    return row["id"]
+
+
+def finish_scrape_run(
+    connection: Connection, run_id: int, jobs_found: int, status: str = "completed"
+) -> None:
+    """Close a scrape_runs telemetry row."""
+    connection.execute(
+        "UPDATE scrape_runs SET finished_at = now(), jobs_found = %s, status = %s WHERE id = %s",
+        (jobs_found, status, run_id),
+    )
+    connection.commit()

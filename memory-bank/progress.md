@@ -58,14 +58,19 @@
    `qwen/qwen3.8-27b`), profile persistence,
    document upload + extraction API, and the editable profile form now talks to the real
    API. Verified end-to-end. Profile embedding deferred behind a flag.
-3. **Agent 2 (Job Curation)** — Selenium/Scrapy scrapers for Hiring Cafe & Eluta, queue
-   builder sorted by age, embedding filter (LangChain + Postgres vector store), LLM
-   compatibility scorer, priority queue builder.
+3. **Agent 2 (Job Curation)** — 🟡 **Step 1 (gather postings) done**: settings
+   (`curator_job_limit`, default 10), concurrent Selenium scrapers for Eluta (working) and
+   HiringCafe (Cloudflare-blocked), scraping agents, queue text-file output, and `jobs`
+   persistence. Still to build: Step 2 (embedding filter), Step 3 (LLM compatibility
+   scorer), Step 4 (priority queue).
+   - **Temporary:** `curator_job_limit` counts **scraped** postings for now — change it to
+     count postings surviving the cosine + LLM steps when Steps 2–4 land.
 4. **Agent 3 (Resume Builder)** — resume-generation chain, LaTeX output, PDF (and optional
    `.docx`) compilation.
-5. **Front-end** — 🟡 Profile form done (upload + editable form, mock data layer). Still to
-   build: Settings page (thresholds + hover help) and Main Dashboard (ranked jobs + resumes
-   + apply links + delete), plus wiring the UI to the backend.
+5. **Front-end** — 🟡 Profile form done; **Settings page** now has the
+   "job postings per run" field + **Start curation** button + status. Still to build: the
+   remaining Settings thresholds and the Main Dashboard (ranked jobs + resumes + apply
+   links + delete).
 6. **Orchestration** — LangGraph graph wiring the agents, background/scheduled curator runs,
    time-delay anti-bot handling.
 7. **Persistence** — ✅ Postgres Vector DB schema for profiles, jobs, embeddings, and
