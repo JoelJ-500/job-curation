@@ -168,9 +168,21 @@ queue) are still to come.
   (massive string)**, plus source/company/location.
 - **Endpoints**: `GET/PUT /api/settings`, `POST /api/curation/start`,
   `GET /api/curation/status`.
-- **NOTE (temporary):** `curator_job_limit` currently counts **scraped** postings. Change
-  it to count the postings that survive the cosine-similarity + LLM evaluation steps once
-  Steps 2–4 are implemented.
+- **Step 2 (dedup + cosine pre-filter)** — implemented in `app/agents/curation_agent.py`
+  with `app/services/embeddings.py`:
+  - The candidate profile (**skills + education + yoe**) is embedded **once** per run,
+    before any scraping (`repository.get_semantic_profile`).
+  - Each posting, in the same iteration it is read, is: (1) checked against `jobs` +
+    `curated_jobs` by link (`repository.job_exists`) and **skipped if already stored**;
+    then (2) embedded (title + full posting text) and compared to the profile vector by
+    **cosine similarity**; anything **below `semantic_text_match_threshold`** (default 0.5)
+    is **discarded**; survivors are queued and persisted to `jobs`.
+  - Embeddings use LangChain **`FastEmbedEmbeddings`** (ONNX via `fastembed`, **no
+    PyTorch**), model `all-MiniLM-L6-v2` (384-dim). Cosine is computed in Python.
+  - Settings UI exposes the **"Semantic Text Match" threshold** (0–1, default 0.5).
+- **NOTE:** `curator_job_limit` currently counts postings surviving Step 2 (dedup +
+  cosine). Once Step 3 (LLM ATS scoring) lands, switch it to count postings surviving
+  that final filter.
 
 ---
 

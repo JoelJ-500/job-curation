@@ -27,23 +27,22 @@
   The frontend now runs against the real API (`VITE_USE_MOCK_API=false`).
 
 ## Current Focus
-Agent 1 (user data acquisition) is implemented and verified end-to-end. **Agent 2 Step 1
-(gather job postings)** is now implemented and verified: a Settings field for "job
-postings per run" (default 10), a **Start curation** button, concurrent Selenium scrapers
-for Eluta (working) and HiringCafe (Cloudflare-blocked), scraping agents, a queue text
-file, and `jobs` persistence. Next: **Agent 2 Steps 2–4** (embeddings filter → LLM
-scoring → priority queue) and the Main Dashboard.
+Agent 1 (user data acquisition) is implemented and verified end-to-end. **Agent 2 Steps 1–2**
+are implemented and verified: scraping (Settings "job postings per run" default 10 + Start
+curation button; Eluta working, HiringCafe Cloudflare-blocked) and the **dedup + cosine
+pre-filter** (per-posting duplicate check against `jobs`/`curated_jobs`, profile embedded
+once per run, "Semantic Text Match" threshold default 0.5 editable in Settings). Next:
+**Agent 2 Steps 3–4** (LLM ATS/compatibility scoring → priority queue) and the Main
+Dashboard.
 
 ## Immediate Next Steps (recommended order)
-1. **Agent 2 Step 2** — embedding + cosine filter (LangChain Embeddings + Postgres vector
-   store) with the `semantic_text_match_threshold`.
-2. **Agent 2 Step 3** — LLM compatibility scorer (strict JSON contract).
-3. **Agent 2 Step 4** — priority queue builder (`compatibility_score_threshold`), write to
-   `curated_jobs`; **move the run-limit check to count jobs surviving Steps 2–4**.
-4. **Unblock HiringCafe** — needs a stealth browser / residential proxy to pass Cloudflare.
-5. **Agent 3 (Resume Builder)** — Jake's template LaTeX, PDF + optional `.docx`.
-6. **Main Dashboard** — ranked curated jobs + resumes + apply links + delete.
-7. **Orchestrate with LangGraph** — wire agents into a graph; background/scheduled runs.
+1. **Agent 2 Step 3** — LLM compatibility scorer (strict JSON contract, weighted rubric).
+2. **Agent 2 Step 4** — priority queue builder (`compatibility_score_threshold`), write to
+   `curated_jobs`; **move the run-limit check to count postings surviving Step 3**.
+3. **Unblock HiringCafe** — needs a stealth browser / residential proxy to pass Cloudflare.
+4. **Agent 3 (Resume Builder)** — Jake's template LaTeX, PDF + optional `.docx`.
+5. **Main Dashboard** — ranked curated jobs + resumes + apply links + delete.
+6. **Orchestrate with LangGraph** — wire agents into a graph; background/scheduled runs.
 
 ## Active Decisions / Assumptions
 - Treat `DESIGN.md` as the master spec (`.clinerules` refers to it as `SYSTEM_DESIGN.md`).
@@ -59,6 +58,17 @@ scoring → priority queue) and the Main Dashboard.
 - Respect the one-page / single-column / standard-header ATS formatting constraints.
 
 ## Recent Changes
+- 2026-10-07: **Agent 2 Step 2 (dedup + cosine pre-filter) built & verified.** The
+  curation agent now, per posting and in the same iteration it is read, (1) skips links
+  already in `jobs`/`curated_jobs` and (2) embeds the posting and drops it if its cosine
+  similarity to the profile vector is below the **Semantic Text Match** threshold
+  (default 0.5, editable in Settings). The profile (skills + education + yoe) is embedded
+  **once** per run. Embeddings use LangChain `FastEmbedEmbeddings` (`langchain-community`
+  + `fastembed`, ONNX, **no PyTorch**), model `all-MiniLM-L6-v2`, via
+  `app/services/embeddings.py`; cosine is computed in Python. New repository helpers
+  `get_semantic_profile` / `job_exists`; the Settings page gained the threshold field.
+  Verified: a run queued 10 postings with `similarity` recorded (e.g. 0.579); threshold
+  0.99 queued 0; a re-run skipped already-stored links and scraped deeper for new ones.
 - 2026-10-06: **Agent 2 Step 1 (gather job postings) built & verified.** Added a
   "job postings per run" setting (default 10) + `GET/PUT /api/settings`; a **Start
   curation** button + status on the Settings page; two concurrent Selenium scrapers

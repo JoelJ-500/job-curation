@@ -698,3 +698,65 @@ def finish_scrape_run(
         (jobs_found, status, run_id),
     )
     connection.commit()
+# ---------------------------------------------------------------------------
+# Semantic pre-filter helpers (Agent 2, Step 2)
+# ---------------------------------------------------------------------------
+
+
+def get_semantic_profile(connection: Connection, user_id: int) -> dict[str, Any]:
+    """Return the skills/education/yoe used to build the profile embedding."""
+    user = connection.execute(
+        "SELECT yoe FROM users WHERE id = %s",
+        (user_id,),
+    ).fetchone()
+
+    skills = connection.execute(
+        """
+        SELECT s.name
+        FROM skills s
+        JOIN user_skills us ON us.skill_id = s.id
+        WHERE us.user_id = %s
+        ORDER BY lower(s.name)
+        """,
+        (user_id,),
+    ).fetchall()
+
+    educations = connection.execute(
+        """
+        SELECT institution_name, credential_name
+        FROM educations
+        WHERE user_id = %s
+        ORDER BY start_date NULLS LAST, id
+        """,
+        (user_id,),
+    ).fetchall()
+
+    education_parts: list[str] = []
+    for row in educations:
+        credential = (row["credential_name"] or "").strip()
+        institution = (row["institution_name"] or "").strip()
+        combined = ", ".join(part for part in (credential, institution) if part)
+        if combined:
+            education_parts.append(combined)
+
+    return {
+        "skills": [row["name"] for row in skills],
+        "educations": education_parts,
+        "yoe": float(user["yoe"]) if user and user["yoe"] is not None else None,
+    }
+
+
+def job_exists(connection: Connection, link: str) -> bool:
+    """True if the posting already exists in `jobs` or `curated_jobs` (by link)."""
+    if not link:
+        return False
+    row = connection.execute(
+        """
+        SELECT 1 FROM jobs WHERE link = %s
+        UNION ALL
+        SELECT 1 FROM curated_jobs c JOIN jobs j ON j.id = c.job_id WHERE j.link = %s
+        LIMIT 1
+        """,
+        (link, link),
+    ).fetchone()
+    return row is not None

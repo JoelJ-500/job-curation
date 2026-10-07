@@ -37,6 +37,9 @@ class Settings:
     headless_browser: bool
     queue_dir: str
 
+    # Embeddings (semantic pre-filter)
+    embedding_model: str
+
     # Feature flags
     enable_profile_embedding: bool
 
@@ -72,6 +75,7 @@ def get_settings() -> Settings:
         chromedriver_path=os.getenv("CHROMEDRIVER_PATH", "/usr/bin/chromedriver"),
         headless_browser=_as_bool(os.getenv("HEADLESS_BROWSER"), True),
         queue_dir=os.getenv("QUEUE_DIR", "/app/data/queue"),
+        embedding_model=os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"),
         enable_profile_embedding=_as_bool(os.getenv("ENABLE_PROFILE_EMBEDDING"), False),
     )
 

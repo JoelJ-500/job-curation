@@ -58,13 +58,17 @@
    `qwen/qwen3.8-27b`), profile persistence,
    document upload + extraction API, and the editable profile form now talks to the real
    API. Verified end-to-end. Profile embedding deferred behind a flag.
-3. **Agent 2 (Job Curation)** — 🟡 **Step 1 (gather postings) done**: settings
-   (`curator_job_limit`, default 10), concurrent Selenium scrapers for Eluta (working) and
-   HiringCafe (Cloudflare-blocked), scraping agents, queue text-file output, and `jobs`
-   persistence. Still to build: Step 2 (embedding filter), Step 3 (LLM compatibility
-   scorer), Step 4 (priority queue).
-   - **Temporary:** `curator_job_limit` counts **scraped** postings for now — change it to
-     count postings surviving the cosine + LLM steps when Steps 2–4 land.
+3. **Agent 2 (Job Curation)** — 🟡 **Steps 1–2 done**.
+   - Step 1: settings (`curator_job_limit`, default 10), concurrent Selenium scrapers for
+     Eluta (working) and HiringCafe (Cloudflare-blocked), scraping agents, queue text-file
+     output, `jobs` persistence.
+   - Step 2: per-posting duplicate check (`jobs` + `curated_jobs`) + **cosine pre-filter**
+     (LangChain `FastEmbedEmbeddings`, `all-MiniLM-L6-v2`, no PyTorch); the profile is
+     embedded once per run; the "Semantic Text Match" threshold (default 0.5) is editable
+     in Settings.
+   - Still to build: Step 3 (LLM ATS/compatibility scorer), Step 4 (priority queue).
+   - **NOTE:** `curator_job_limit` counts postings surviving Step 2; switch it to count
+     postings surviving Step 3 once that lands.
 4. **Agent 3 (Resume Builder)** — resume-generation chain, LaTeX output, PDF (and optional
    `.docx`) compilation.
 5. **Front-end** — 🟡 Profile form done; **Settings page** now has the

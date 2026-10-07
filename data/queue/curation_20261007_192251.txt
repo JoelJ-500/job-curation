@@ -1,0 +1,366 @@
+# Job curation queue - 10 postings - 20261007_192251
+
+===== JOB 1 =====
+source: eluta
+title: Operations & Systems Analyst
+link: https://www.eluta.ca/spl/operations-%26-systems-analyst-a969e369c8885d9130fef99fb0a6454b?imo=12
+date of posting: 17 minutes ago
+similarity: 0.5788
+company: OSCO Construction Group
+location: Woodstock ON
+job posting:
+Operations & Systems Analyst
+OSCO Construction Group
+Woodstock ON
+Full-Time
+Salary: $60,000 - $80,000
+About Us:
+With a solid history dating back to 1958, PreCon Precast Limited (now a member of the OSCO Construction Group) is known as a leading provider of architectural and structural precast concrete solutions with our manufacturing plant in Woodstock ON and office in Mississauga, ON. Across Ontario, you will find PreCon precast products and systems used in a variety of construction segments. Our value creation is cultivated by our workforce; a strong team built of Technical Sales, Engineering, Project Management, Production and Field Services. We pride ourselves in being leaders in precast concrete innovation, building more energy efficient, sustainable, and safe structures.
+Position Summary
+PreCon Precast Limited is seeking a highly organized and detail-oriented Operations & Systems Analyst to support business operations through reporting, systems administration, work order management, and cross-functional project coordination. This role works closely with Operations, Maintenance, IT, Purchasing, and Finance teams to ensure accurate reporting, efficient processes, and continuous improvement initiatives.
+Key Responsibilities
+Prepare and distribute weekly labour reports for Production and Construction operations.
+Manage hardware work orders, including setup, tracking, labour hour allocation, and closure.
+Support the administration and ongoing enhancement of the Maintenance App and related maintenance processes.
+Assist with the implementation and support of business systems and process improvement initiatives.
+Provide user support and training for JD Edwards (JDE).
+Supporting operations on Manufacturing Execution System (MES) and Production Planning System (PPS).
+
+
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 2 =====
+source: eluta
+title: Technical Analyst (Support Services)
+link: https://www.eluta.ca/spl/technical-analyst-support-services-220b9a8e0162236b834ba032e47f8d51?imo=12
+date of posting: 1 hour ago
+similarity: 0.574
+company: Farm Credit Canada
+location: Regina SK
+job posting:
+Technical Analyst (Support Services)
+Farm Credit Canada
+Regina SK
+Full-Time
+Salary: $72,930 - $98,670
+Salary Range (plus eligible to receive a performance based incentive, applicable to position) :
+$72,930 - $98,670
+Why FCC?
+At FCC, we’re proud to be 100% invested in Canadian agriculture and food. As a federal Crown corporation, we provide financing, knowledge resources and business management software to over 103,000 customers nationwide.
+Here’s what you can expect when you join our team:
+Competitive total rewards packages: market-aligned and performance-based salary and incentive programs, flexible and comprehensive group benefit and savings plans, and well-being support through benefits and wellness programs
+Purpose-driven work: We build strong relationships, share knowledge and support the people who feed the world
+Growth: Learning and development opportunities to help you thrive
+Hybrid work options
+.
+How you’ll make an impact
+
+As a Technical Analyst, you’ll translate business needs into practical, effective technology solutions. You’ll gather and interpret requirements, configure and enhance systems, and continuously improve tools and processes to support automation and reliable operations. Using your technical curiosity and critical thinking skills, you’ll troubleshoot issues, work with modern cloud technologies—including SaaS and PaaS—and apply your understanding of system integration to deliver solutions that advance FCC’s goals and improve the customer experience.
+
+
+
+
+
+
+
+
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 3 =====
+source: eluta
+title: Functional Analyst, HRMS
+link: https://www.eluta.ca/spl/functional-analyst-hrms-8f571c4553e0a11f3577d49003ef7c8a?imo=12
+date of posting: 1 hour ago
+similarity: 0.6382
+company: Stantec
+location: Edmonton AB
+job posting:
+Functional Analyst, HRMS
+Stantec
+Edmonton AB
+Part-Time
+Salary: $69,600 - $100,900
+At Stantec, we have some of the world’s leading professionals passionate about enabling our business to be its best. Our business teams include finance, procurement, human resources, information technology, marketing, corporate development, HSSE, real estate, legal, and practice services. We bring diverse backgrounds, skills, and expertise and create a caring culture where everyone can thrive. Through teamwork and collaboration, we’re building a stronger, more resilient Stantec every day.
+Your Opportunity
+We are looking for an Oracle Functional Analyst to be part of the evolution and enhancement of our Oracle HCM Cloud, including Oracle Financials, Projects, Payroll and HRMS, to meet the needs of our business.
+As a Functional Analyst, you will collaborate with technical analysts and end-users to resolve tier 1 and tier 2 incidents/problems, perform regular and on-demand service delivery activities, and monitor/resolve processing exceptions by using knowledge of the front-end system procedures and data dependencies. You will also provide functional expertise in assigned project roles on implementing Oracle solutions.
+Your Key Responsibilities
+Monitor and respond in a timely manner to incidents and service interruptions logged by the IT Service Center in the service management system.
+Provide functional expertise for assigned project role on implementing Oracle HCM and Taleo and other HR implementations.
+Contribute to the solution design, configuration, integration, testing, training, knowledge-transfer activities, and post-production support requirements.
+Guide the team with best business practices of the functionalities of Oracle HCM, Taleo and other HR solutions.
+
+
+
+
+
+
+
+
+
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 4 =====
+source: eluta
+title: Senior Dynamics 365 CE / CRM Power Platform Consultant
+link: https://www.eluta.ca/spl/senior-dynamics-365-ce-crm-power-platform-consultant-72118f07e4cc930584d0eaaee3b076f2?imo=12
+date of posting: 2 hours ago
+similarity: 0.6148
+company: BDO Canada LLP
+location: Toronto ON
+job posting:
+Senior Dynamics 365 CE / CRM Power Platform Consultant
+BDO Canada LLP
+Toronto ON - Work Remotely
+Full-Time
+Salary: $84,000 - $128,000
+BDO Canada’s Solution Operations practice is currently in the process of recruiting a full-time permanent Senior Dynamics 365 CE / CRM & Power Platform Consultant to join our growing GTA team.
+The position will be responsible for providing post-implementation application support while leading proactive optimization and advisory services that drive measurable client outcomes (adoption, efficiency, ROI).
+This is a senior client-facing advisory role within a managed services environment, expected to shift engagements from reactive support toward structured, value-driven service delivery. The successful candidate will operate as a trusted advisor, helping clients evolve their Dynamics 365 CE and Power Platform capabilities, not just resolve issues. In addition to reactive support, this role will contribute to the development of repeatable service offerings, proactively identifying opportunities to enhance client outcomes through standardized solutions, best practices, and continuous improvement.
+BDO's Digital practice provides implementation and support services for accounting and enterprise resource planning (ERP), customer relationship management (CRM), Power Platform, and business intelligence (BI) solutions to clients across Canada. BDO Digital is a Microsoft Solutions Partner and has consistently been recognized through Microsoft partner awards, including Inner Circle and President’s Club membership.
+Key Accountabilities and Responsibilities
+Client Advisory & Value Ownership
+Own client outcomes (adoption, efficiency, ROI), not just issue resolution
+Lead health checks, roadmap discussions, and value-based reviews
+Provide constructive challenge to client approaches where required
+Identify and quantify business impact of recommendations
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 5 =====
+source: eluta
+title: Senior Director, Analyst – Software Engineering AI Strategy and Value (Remote - Canada) /
+Directeur principal, analyste – Stratégie et valeur de l’IA ...
+link: https://www.eluta.ca/spl/senior-director-analyst-%E2%80%93-software-engineering-ai-strategy-and-value-remote-canada-directeur-bf83b45f829115d8d87b786283945f78?imo=12
+date of posting: 2 hours ago
+similarity: 0.5789
+company: Gartner, Inc.
+location: North York ON
+job posting:
+Senior Director, Analyst – Software Engineering AI Strategy and Value (Remote - Canada) / Directeur principal, analyste – Stratégie et valeur de l’IA ...
+Gartner, Inc.
+North York ON - Work Remotely
+Full-Time
+Gartner Analysts are industry thought leaders who create must-have insights, market predictions and best practices for a broad range of world-leading organizations. A Senior Director serves as a leader within Gartner’s Business and Technology Insights (BTI) group, establishing oneself as a credible voice within their designated market at local,…" /> Skip to main content
+Join Talent Community
+Senior Director, Analyst – Software Engineering AI Strategy and Value (Remote - Canada) / Directeur principal, analyste – Stratégie et valeur de l’IA en ingénierie logicielle (Télétravail – Canada)
+Remote - Canada
+Business and Technology Insights
+Description
+Une version en langue française suit
+About the role:
+Gartner Analysts are industry thought leaders who create must-have insights, market predictions and best practices for a broad range of world-leading organizations. A Senior Director serves as a leader within Gartner’s Business and Technology Insights (BTI) group, establishing oneself as a credible voice within their designated market at local, regional and global levels. Utilizing exceptional research and analytical skills, a Senior Director plays a significant role in producing pragmatic and provocative insights which Gartner clients consume and apply to propel their business toward key objectives. They are a trusted source of advice for clients, reinforcing Gartner’s value every day by engaging them via in-person meetings, virtual meetings, sales support visits and Gartner conferences to discuss complex client challenges and offer appropriate recommendations.
+
+
+
+
+
+
+
+
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 6 =====
+source: eluta
+title: Analyst, Transit
+link: https://www.eluta.ca/spl/analyst-transit-1868d8c886ca9fa18dec8c3b121ae3f4?imo=12
+date of posting: 3 hours ago
+similarity: 0.5455
+company: Brampton, Corporation of the City of
+location: Brampton ON
+job posting:
+Analyst, Transit
+Brampton, Corporation of the City of
+Brampton ON
+Full-Time
+Apply by October 21, 2026
+Salary: $90,670 - $102,004
+Job Opening Number: 107169
+Job Requisition Number: 584
+Number of Positions: 1
+Job Type: Management and Administration
+Job Code: Analyst 5, 35
+Department: TRANSIT
+Division: Transit Services
+Hiring Salary Range: $90,670.00 - $102,004.00 per annum
+Job Grade: 5
+Job Status and Duration: Full Time (FT), Regular (R)
+Hours of Work: 35 Hour work week
+Location: Sandalwood Facility
+Posting Date: 10/07/2026
+Closing Date: 10/21/2026
+Notice to Internal Applicants: To ensure your application is processed as internal, please submit your application using your City of Brampton work email address.
+
+External and internal applicants are now being considered.
+This position prepares, administers and provides in-depth analysis of Brampton Transit’s Current and Capital Budgets and all related reporting. General responsibilities will be to provide day-to-day accounting activities and related financial claims reporting to meet Municipal, Provincial & Federal reporting requirements. This position also provides timely financial and analytical expertise to all Transit sections to ensure accurate processing & reporting of financial and Transit statistical information.
+
+
+
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 7 =====
+source: eluta
+title: Senior Product Manager
+link: https://www.eluta.ca/spl/senior-product-manager-bedf135319cc2bd902b438d9f0c3575c?imo=12
+date of posting: 3 hours ago
+similarity: 0.5809
+company: Coalition, Inc.
+location: 
+job posting:
+Senior Product Manager
+Coalition, Inc.
+Work Remotely
+Full-Time
+Understanding cyber risk at internet scale is a difficult product problem. The data must be broad enough to identify meaningful exposures, accurate enough to support important decisions, and timely enough to be useful when it matters. It also needs to be presented in ways that different users can understand and act on. As Product Manager, Scanning amp; Risk Data, you will bring a product perspective to this challenge. You will connect the technical systems that collect and process security data with the people and products that use it. You will set priorities, clarify trade-offs, and help Coalition build a more accurate, scalable, and actionable view of cyber risk. What Youll Own The product strategy for Coalitions scanning and risk-data capabilities. How we discover and understand a companys digital assets, technologies, vulnerabilities, and security posture. The quality, accuracy, timeliness, and usability of the data produced by our scanning systems. The experiences, APIs, and data products that make risk information useful to underwriters, security teams, analysts, and customers. The balance between coverage, precision, speed, reliability, and cost as the platform scales. The roadmap for improving our ability to add new signals, support new use cases, and deliver consistent value across Coalitions products. What Youll Do Develop a clear product vision for how Coalition collects, interprets, and delivers cyber-risk intelligence. Work with Engineering and Data to improve the coverage, accuracy, performance, and reliability of our scanning capabilities. Partner with Underwriting, Actuarial, Security, and customer-facing teams to understand their needs and translate them into products and capabilities. Decide which problems to solve first and make thoughtful trade-offs between new functionality and improvements to quality, scale, and reliability. Define success metrics and use quantitative and qualitative feedback to guide product decisions. Create simple, reusable ways for teams and customers to access and understand risk data. Lead product discovery, write requirements, shape solutions with design and engineering, and guide initiatives from concept through launch. Communicate clearly with technical and non-technical stakeholders, including senior leadership. Help the team apply AI and automation thoughtfully. What Were Looking For 5+ years of product management experience, including work on technical, data-intensive, platform, infrastructure, security, or developer-facing products. Experience building products that serve multiple users or teams with different needs and priorities and a track record of partnering effectively with Engineering, Data, Design, and business stakeholders. Strong product judgment and the ability to turn complex technical problems into clear strategies and practical roadmaps. Comfort working with data quality, reliability, APIs, analytics, and systems that produce probabilistic or imperfect information. Strong written and verbal communication skills, with the ability to create clarity in ambiguous situations. An analytical mindset and a willingness to engage deeply with both customer problems and technical details. A bias toward action, continuous learning, and measurable outcomes. Bonus Points Experience with cybersecurity, attack-surface management, vulnerability management, threat intelligence, or security operations. Familiarity with large-scale data collection, distributed systems, data platforms, or developer tools. Daily fluency with AI tools and a point of view on how AI can improve product development and security outcomes. If you are excited by the opportunity to make complex cyber-risk data more accurate, understandable, and useful, we would love to hear from you. Compensation As a remote-first organization, our compensation reflects the cost of labor across several Canadian geographic markets. In Alberta, British Columbia amp; Ontario the base salary for this position ranges from $170,000/year up to $190,000/year. For all other locations, the base salary for this position ranges from $150,000/year up to $180,000/year. Consistent with applicable laws, an employees pay within this range is based on a number of factors, which include but are not limited to relevant education, skills, job-related knowledge, qualifications, work experience, credentials, and/or geographic location. Your Recruiter can share more on the specific target salary range for your location during the interview process. Coalition, Inc. reserves the right to modify this range as needed. Vacancy Status: This posting is for an existing vacancy. Use of AI: We utilize AI-assisted tools to help us organize and review the high volume of applications we receive. However, our human recruiting team makes all final hiring decisions and interview selections, valuing personal connection over algorithms. Application Updates: Consistent with our commitment to transparency, if you are interviewed for this role, we will provide a status update on your application within 45 days of your final interview. Perks 100% medical, dental, and vision coverage Flexible PTO Annual home office stipend and WeWork access Mental amp; physical health wellness programs like Headspace, Lumino, and more! Competitive compensation and opportunity for advancement
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 8 =====
+source: eluta
+title: Financial System Analyst
+link: https://www.eluta.ca/spl/financial-system-analyst-dd45ff4b5c97de8851757f02fc170bb8?imo=12
+date of posting: 3 hours ago
+similarity: 0.6015
+company: CAE Inc.
+location: Montréal QC
+job posting:
+Financial System Analyst
+CAE
+Montréal QC
+Full-Time
+⠀
+Behind every success is a team of dedicated experts driving us forward. From HR professionals who shape our culture, to IT innovators driving technological advancements, Finance leaders ensuring our growth, Communicators shining a light on our story, and Legal experts safeguarding our future —every role is essential. Our enterprise functions don’t just support; they lead, playing a critical role in shaping the company’s path forward and ensuring both clients and employees are ready for the moments that matter. Be part of a team where your work makes a difference. You’ll work on impactful projects and turn ideas into reality while enjoying growth opportunities, teamwork, and a balanced work-life.
+The Financial Systems Analyst supports Oracle financial systems (11i, R12, and Cloud) and plays a key role in the implementation, deployment, and ongoing optimization of financial systems and processes across multiple regions.
+
+In this role, you will:
+Partner in systems/operational processes for global finance colleagues for Oracle Cloud.
+Weekly meetings with one's manager to provide support for the resolution of problems or to discuss problematic issues.
+Ongoing weekly meetings with regions to provide support after implementation of integrated management software (Oracle Cloud).
+Discuss accounting and technical matters linked with the users of Oracle Cloud.
+Carry out timely audits to assess the utilization of Oracle Cloud systems.
+Work with CAE's internal stakeholders to enable data management for effective analysis and monitoring.
+Regular
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 9 =====
+source: eluta
+title: Business Intelligence Analyst
+link: https://www.eluta.ca/spl/business-intelligence-analyst-5b6832963d9534f0760ed7015bac73d8?imo=12
+date of posting: 4 hours ago
+similarity: 0.5968
+company: ATCO Ltd.
+location: Edmonton AB
+job posting:
+Business Intelligence Analyst
+ATCO Ltd.
+Edmonton AB
+Full-Time
+Apply by October 20, 2026
+ Business Intelligence Analyst - Finance
+Division: ATCO Energy Systems
+Location: Edmonton, A
+ATCO is looking for a Business Intelligence Analyst to join our Finance team and play a key role in transforming complex data into meaningful insights. Reporting to the Senior Manager, Operational Accounting, you will be responsible for ensuring the accuracy and integrity of critical datasets, developing reporting solutions, and connecting information from multiple sources to support financial planning and decision-making.
+In this role, you'll lead the development and maintenance of labour reporting and analysis tools, identify opportunities to improve reporting efficiency, and collaborate closely with Finance, Operations, and IT teams to deliver high-quality business intelligence solutions. You'll also have the opportunity to provide leadership by supervising a team of student employees responsible for timecard administration, ensuring accuracy, compliance, and exceptional service.
+This is an exciting opportunity for a data-driven professional who enjoys solving complex problems, building innovative reporting solutions, and making a meaningful impact through analytics, collaboration, and continuous improvement.
+Why Work here:
+Always there. Anywhere. That’s us! We’ve got a lot of energy at ATCO, focused on creating prosperity for generations to come. Embrace challenge and growth because your career journey at ATCO has the potential to be full of new experiences and inspiring challenges.
+What You’ll Do:
++ READ MORE
+
+Apply Now
+Share this job:
+VISIT CAREERS PAGE
+Follow this employer:
+Aspiring technicians at ATCO can complete their training through the organization’s in-house school, offering access to the best labs and equipment available
+READ MORE
+1
+2
+MORE JOBS AT
+ATCO LTD.
+Project Engineer, Technical Services
+Edmonton, AB
+Sales Representative
+Edmonton, AB
+Commercial Sales Representative
+Edmonton, AB
+Supervisor, Construction
+Edmonton, AB
+Carpenter
+Edmonton, AB
+Red Seal Journeyman Plumber/Gasfitter A
+Edmonton, AB
+Journeyman Plumber/Gasfitter
+Edmonton, AB
+Manager, Warehouse Operations
+Edmonton, AB
+Journeyman Plumber / Gasfitter
+Edmonton, AB
+More Jobs »
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 10 =====
+source: eluta
+title: IT Customer Support II
+link: https://www.eluta.ca/spl/it-customer-support-ii-b6b5b06cd146b1d8429587a416716c78?imo=12
+date of posting: 4 hours ago
+similarity: 0.5766
+company: Alberta Health Services / AHS
+location: Quarry NL
+job posting:
+IT Customer Support II
+AHS
+Quarry NL
+Full-Time
+Apply by October 15, 2026
+Salary: $34.01 - $41.53/hr
+Your Opportunity:
+The Customer Support II (CSII) Deskside Analyst position provides technical support for computing devices, printer devices, peripherals, deskside applications, mobility devices and other technology and applications to a variety of users across Alberta Health Services. The CSII is predominately an onsite hands-on technical support role. The CSII may resolve issues and requests remotely where applicable. The Customer Support II can often represent an escalation point from Customer Support I and is responsible for more advanced support of technical issues. This position also investigates more complex technical problems for which existing precedent is not currently available. Where the problem cannot be resolved by this position, the incumbent will escalate the issue to more senior staff or a specialized technical team for resolution. The position may participate in activities related to implementing the solution, as assigned by senior staff.
+Description:
+As an IT Customer Support II, you will provide advanced technical support to a variety of users for information technology issues in accordance with organizational standards and practices.
+Your Opportunity (1900 Character Limit) The Customer Support II (CSII) Deskside Analyst position provides technical support for computing devices, printer devices, peripherals, deskside applications, mobility devices and other technology and applications to a variety of users across Alberta Health Services. The CSII is predominately an onsite hands-on technical support role. The CSII may resolve issues and requests remotely where applicable. The Customer Support II can often represent an escalation point from Customer Support I and is responsible for more advanced support of technical issues. This position also investigates more complex technical problems for which existing precedent is not currently available. Where the problem cannot be resolved by this position, the incumbent will escalate the issue to more senior staff or a specialized technical team for resolution. The position may participate in activities related to implementing the solution, as assigned by senior staff.
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+

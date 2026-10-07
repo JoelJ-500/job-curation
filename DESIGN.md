@@ -98,6 +98,8 @@ Improv Notes for future:
 **Step 2- Check if each curated job is already in the database**
 Discard any scraped jobs that are already in the database or current queue
 
+Step 2 implementation (built — `app/db/repository.py` `job_exists`): each posting, right after it is read from a job site, is checked by link against the `jobs` and `curated_jobs` tables; if it is present it is discarded and the scraper moves on to the next posting.
+
 **Step 3: Filter down job postings with LangChain Embeddings \+ VectorStore:**   
 Allow the user to set a “Semantic Text Match” threshold between 0 and 1, in the settings(by default 0.5). 
 
@@ -106,6 +108,8 @@ For every job in the queue, run the elements in the “skills, education, yoe”
 If the score \>= “Semantic Text Match” threshold, keep the current job  in the queue. Else remove it. 
 
 This step will trim down the amount of job postings that need to be evaluated by the agent in the next step, saving token costs. 
+
+Step 3 implementation (built — `app/services/embeddings.py`, `app/agents/curation_agent.py`): the candidate profile (skills + education + yoe, read from the DB) is embedded **once** per run, before any scraping; each posting is embedded in the same iteration it is read and compared to the profile vector by cosine similarity (computed in Python). Postings below the "Semantic Text Match" threshold (default 0.5, editable in Settings) are discarded; survivors enter the queue. Embeddings use LangChain `FastEmbedEmbeddings` (`all-MiniLM-L6-v2`, ONNX, no PyTorch). 
 
 **Step 4: Filter down again, this time with LLM:**   
 Use an agent to assess compatibility score of every job posting that passed Step 2, using the following prompt:
@@ -150,7 +154,7 @@ The JSON structure must match this template exactly:
     "eligibility\_score": \<Integer between 0 and 100\>  
   }
 
-**Step 4: Building a priority queue of curated job postings**  
+**Step 5: Building a priority queue of curated job postings**  
 If the overall match score is \>= Compatibility Score (Default of 70, make this editable by the user in user settings), add this to the final curated job posting priority queue. The queue should be sorted from highest to lowest compatibility. Then add this queue to the CuratedJobs database. 
 
 3. **Resume Builder**

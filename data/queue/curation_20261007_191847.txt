@@ -1,0 +1,324 @@
+# Job curation queue - 10 postings - 20261007_191847
+
+===== JOB 1 =====
+source: eluta
+title: It Analyst Ii
+link: https://www.eluta.ca/spl/it-analyst-ii-c7c2e506c5718e3124321f587044be3a?imo=12
+date of posting: 4 hours ago
+similarity: 0.6437
+company: Alberta Health Services / AHS
+location: Quarry NL
+job posting:
+It Analyst Ii
+AHS
+Quarry NL
+Full-Time
+Apply by October 15, 2026
+Salary: $42.12 - $56.86/hr
+Your Opportunity:
+You are an experienced professional with a strong aptitude for Laboratory Information Systems and an interest in making a difference within a dynamic healthcare technology environment. You possess the resilience to adapt in a fast paced and changing atmosphere while thriving on collaborative problem solving with dedicated technical teams. We are seeking a self-directed individual to join the Beaker Application Support Team as a Genetics and Genomics IT Analyst II, providing day to day technical support for laboratory clients while maintaining a thorough understanding of their business processes. This role focuses on supporting evolving operational needs across multiple complex areas including molecular pathology, flow cytology, cytogenetics, and molecular genetics. As a clear communicator, you will excel at translating technical and operational requirements from customers into robust Epic Beaker software solutions. You bring an analytic mind to solve complex technical challenges and present effective system solutions tailored specifically to laboratory informatics workflows. A successful team member values diverse stakeholder contributions and works seamlessly across technical groups. Analysts working within this team provide comprehensive troubleshooting, system testing, configuration, and integration support for order and result data to ensure the optimal functioning of the Epic Beaker Laboratory Information System and related applications in compliance with established service level agreements. The work spans all levels of technical complexity from simple fixes to very complex implementations, including project leadership for small and medium initiatives. The successful candidate will actively participate in ongoing system support and development regarding Beaker applications, which may include participation in after-hours call rotations.
+Description:
+As an IT Analyst II, you will provide technical support related to information technology applications either directly to users of the systems or to service delivery functions. You will ensure reliable operations of information systems, resolve complex technical problems, find solutions to customer needs, and lead projects and program initiatives. You will be responsible for more advanced application, telecom or technology support duties. You will investigate, diagnose, and resolve complex problems that have typically been escalated several levels before assignment to this position, and will translate business requirements into technical requirements for a solution and recommend a potential approach to the vendor. You will analyse the solution provided to ensure that it fits both technical requirements and business needs. You will also spend time on project or initiative leadership and delivery.
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 2 =====
+source: eluta
+title: Business Analyst, Real Estate and Construction Data
+link: https://www.eluta.ca/spl/business-analyst-real-estate-and-construction-data-d0a5b1d02d7689b084aeda7c47e757b2?imo=12
+date of posting: 4 hours ago
+similarity: 0.6014
+company: Canadian Tire Corporation Limited
+location: Toronto ON
+job posting:
+Business Analyst, Real Estate and Construction Data
+Canadian Tire
+Toronto ON
+Full-Time
+Salary: $68,000 - $75,000
+The Business Analyst, Real Estate and Construction Data is responsible for translating complex construction and financial forecasting data into clear, actionable insights while supporting the administration, testing, and continuous improvement of Lucernex and related business systems. This role bridges data, finance, operations, and technology by explaining forecast drivers, variances, risks, and assumptions; maintaining system access, roles, workflows, configurations, and data integrity; coordinating the onboarding and ongoing support of internal and external Lucernex users; and supporting system enhancements through requirements gathering, testing, issue resolution, documentation, and user training. The ideal candidate is a strong communicator and analytical problem-solver with system administration experience and working knowledge of SQL and JavaScript, capable of using AI-enabled tools and Microsoft technologies to improve system functionality, strengthen forecast accuracy, automate processes, and clearly explain the rationale behind the numbers.
+
+What You’ll Do:
+Forecasting Insights & Analysis
+Interpret and synthesize construction and financial forecasting data, including cost, revenue, cash flow, productivity, and schedule impacts.
+Identify forecast drivers, trends, risks, and variances, and clearly explain their implications to non-technical audiences.
+Support short-term and long-range forecasting cycles, ensuring assumptions are well-documented and understood.
+Partner with estimating and project teams to validate inputs, challenge assumptions, and close forecasting gaps.
+
+
+
+
+
+
+
+
+
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 3 =====
+source: eluta
+title: Business Data Analyst
+link: https://www.eluta.ca/spl/business-data-analyst-0c2a9f6b51544cfac4a2447d95dfd96d?imo=12
+date of posting: 4 hours ago
+similarity: 0.581
+company: Canadian Tire Corporation Limited
+location: Oakville ON
+job posting:
+Business Data Analyst
+Canadian Tire
+Oakville ON
+Full-Time
+Salary: $53,000 - $88,000
+What You’ll Do:
+As the Business Data Analyst, you will provide structured transparency and management of our data assets. By focusing on data sourcing, integration, data quality and governance principles, the Business Data Analyst will ensure we know where our data comes from, is stored, is going and how it is being used and transformed along the way. The Business Data Analyst will enable a collaborative data environment where all stakeholders have access to the data they need, understanding, confidence and trust in the data they use and support for the data they steward.
+Promote and contribute to the development and continuous improvement of data governance and data management standards, policies, procedures and controls
+Continuously assess the current state of our data environment to identify process improvement opportunities such as inefficient table structures, ineffective load processes, R.O.T. or metadata and reference data enhancements
+Proactively monitor data, metadata and reference data and support the data stewardship community in resolving identified data quality and data integrity concerns
+Maintain data models as well as metadata and documentation such as data glossaries and catalogs, data mappings, data lineage and data classifications
+Participate in data integrations as the liaison between I.T., business data owners\\stewards and subject matter experts and conduct data profiling and data discovery to support these efforts
+Maintain open communication between all data stakeholders, from data producers to consumers, and remain an active enabler of the data governance structure of the Bank
+What You Bring:
+
+This posting represents an existing vacancy within our organization.
+
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 4 =====
+source: eluta
+title: Test Engineer L3
+link: https://www.eluta.ca/spl/test-engineer-l3-0a8f8a8c29a509b0438b7f36828627be?imo=12
+date of posting: 4 hours ago
+similarity: 0.7047
+company: Wipro Technologies
+location: Toronto ON
+job posting:
+Test Engineer L3
+Wipro Technologies
+Toronto ON
+Full-Time
+Job Description: We are looking for a skilled Software Development Engineer in Test (SDET) to support quality engineering activities for web and mobile applications. The ideal candidate will have strong hands-on experience in test automation using Java, Rest Assured, Selenium, and Appium, with the ability to design, develop, and maintain scalable automation frameworks across API, web, and mobile platforms. Key Responsibilities: • Design, develop, and maintain automated test scripts for web, mobile, and API testing. • Build and enhance automation frameworks using Java, Selenium, Appium, Rest Assured, and related testing tools. • Perform functional, regression, integration, smoke, and end-to-end testing across application releases. • Collaborate with developers, business analysts, product owners, and QA teams to understand requirements and define test coverage. • Create and maintain test plans, test cases, test data, and traceability documentation. • Identify, document, and track defects through resolution using standard defect management tools. • Integrate automated test suites into CI/CD pipelines and support continuous testing practices. • Analyze test execution results, troubleshoot automation failures, and provide clear quality reports to stakeholders. Required Technical Skills: • Strong programming experience in Java for test automation development. • Hands-on experience with Selenium WebDriver for web application automation. • Hands-on experience with Appium for mobile automation testing across Android and iOS platforms. • Experience with Rest Assured for API automation and validation of RESTful services. • Good understanding of test automation frameworks such as TestNG, JUnit, Cucumber, BDD, or similar tools. • Experience with version control tools such as Git and build tools such as Maven or Gradle. • Knowledge of CI/CD tools such as Jenkins, Azure DevOps, GitHub Actions, or equivalent platforms. • Basic understanding of SQL and database validation is preferred. General Skills Required: • Strong analytical and problem-solving skills with attention to detail. • Ability to work independently and as part of an Agile delivery team. • Strong communication skills to collaborate effectively with technical and business stakeholders. • Ability to understand business requirements and translate them into effective test scenarios. • Good ownership mindset with the ability to manage priorities and deliver within timelines. • Commitment to quality, continuous improvement, and automation-first testing practices. • Experience working in Agile/Scrum environments and participating in sprint ceremonies. Preferred Qualifications: • Prior experience in banking, financial services, or enterprise application testing is an asset. • Experience with cloud-based testing environments and containerized test execution is preferred. • Exposure to performance, accessibility, or security testing concepts 
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 5 =====
+source: eluta
+title: IT Business Analyst (On Call)
+link: https://www.eluta.ca/spl/it-business-analyst-on-call-b257f34515ec89212d5487bffba765e9?imo=12
+date of posting: 4 hours ago
+similarity: 0.64
+company: Okanagan College
+location: Kelowna BC
+job posting:
+IT Business Analyst (On Call)
+Okanagan College
+Kelowna BC
+Full-Time
+Apply by October 18, 2026
+Salary: $35.07 - $40.07/hr
+When you join Okanagan College, you’re joining a team that’s transforming lives and communities.
+Every course you create, every student you support and every connection you build, it all matters.
+Be a part of a vibrant campus community, where the work you do every day truly makes a difference.
+Salary Range: $35.07 -$40.07 hourly
+Bargaining Unit: Support
+Appointment Type: Non-Regular On-Call 
+Schedule: On Call Work As Available
+Posting Closing Date: October 18, 2026
+Special Instructions to Applicants:
+Shortlisted internal candidates must notify the current Support Staff Bargaining Chairperson and People Services if they want a Union Observer during interviews and final selection of candidates.
+Your Opportunity
+Under the general direction of the Manager of Software & Enterprise Systems, the IT Agile Project Coordinator plays a key role in coordinating a variety of technology initiatives that support the College’s strategic and operational goals. This position works collaboratively across teams and departments to support the successful delivery of IT projects, including software upgrades, system integrations, modernization efforts, and business process improvements. The Coordinator facilitates agile planning activities, supports stakeholder engagement, helps define and track scope, schedule, risks and quality, and assists teams through iterative delivery cycles. They also develop project plans and status reports. Acting as a servant leader, the Coordinator focuses on removing blockers, reducing lead times, and enabling smooth collaboration between IT and the business. This role supports continuous learning, high-quality delivery, and timely stakeholder communication across all project lifecycle phases.
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 6 =====
+source: eluta
+title: Advisor, Analytics Consulting
+link: https://www.eluta.ca/spl/advisor-analytics-consulting-2f565a4977f03b17cb06303372da3c78?imo=12
+date of posting: 4 hours ago
+similarity: 0.6018
+company: TransUnion of Canada, Inc.
+location: Burlington ON
+job posting:
+Advisor, Analytics Consulting
+TransUnion of Canada, Inc.
+Burlington ON - Work Remotely
+Full-Time
+TransUnion's Job Applicant Privacy Notice
+Team Overview
+As an Advisor, Analytics Consulting, you will serve as the primary delivery lead for client-contracted analytics consulting engagements focused on credit risk management and business intelligence.
+You will be responsible for delivering customized analytical solutions that help clients make better risk decisions, improve business performance, and maximize the value of TransUnion data and analytics assets.
+You will lead engagements across the full analytics lifecycle, including requirements gathering, analytical design, data extraction, modeling, validation, insight generation, and executive presentation. Working closely with clients, Sales teams, Solution Consultants, and DSA analysts, you will translate complex business challenges into impactful analytical solutions that drive measurable client value and revenue growth.&#xa;&#xa;This is a hybrid position and involves regular performance of job responsibilities virtually as well as in-person at an assigned TU office location for a minimum of two days a week.
+Role Overview And Core Responsibilities
+Lead end-to-end execution of analytics consulting engagements, including:
+o Requirements gathering and business problem definition
+o Analytical design and solution development
+o Data extraction, transformation, and quality assurance
+o Statistical analysis, modeling, and benchmarking
+
+
+
+
+
+
+
+Advisor, Analytics Consulting
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 7 =====
+source: eluta
+title: Développeur/Développeuse Salesforce
+link: https://www.eluta.ca/spl/d%C3%A9veloppeur-d%C3%A9veloppeuse-salesforce-4e12b560c47e2601ed166e073ab693f1?imo=12
+date of posting: 5 hours ago
+similarity: 0.6523
+company: Deschênes Group Inc.
+location: Montréal QC
+job posting:
+Développeur/Développeuse Salesforce
+Deschênes Group Inc.
+Montréal QC
+Full-Time
+Description du poste
+En tant que développeur Salesforce, vous contribuez à l’évolution de nos plateformes Commerce, Marketing, et service Cloud, ainsi qu'à des intégrations à multiples systèmes tels que SAP, PIM, et autres via iPASS. Vous êtes responsable de l'analyse, la conception, le développement, les tests, le déploiement, la maintenance, et du support des solutions auprès des unités d'affaires.
+vos responsabilitÉS
+Assumer un rôle de leadership technique auprès de l'équipe, des partenaires commerciaux, des intégrateurs de systèmes et des fournisseurs de solutions.
+Agir à titre d'expert de l'écosystème Salesforce et offrir du coaching ainsi que du soutien technique aux membres de l'équipe et du Centre d’excellence.
+Collaborer avec les gestionnaires de projet, les analystes d'affaires et les propriétaires de produits afin d'analyser les besoins d'affaires et proposer des solutions adaptées sur Salesforce.
+Développer des composants Apex (classes et déclencheurs) ainsi que des Lightning Web Componants (LWC) afin de répondre aux besoins de l’entreprise.
+Concevoir des solutions personnalisées et assurer l’intégration avec des systèmes externes à l'aide d'API REST
+Diagnostiquer et corriger les bogues, tout en participant aux revues de code, aux tests unitaires et aux déploiements.
+Rédiger et maintenir la documentation technique, assurer le transfert de connaissances et offrir de la formation technique aux équipes.
+Veiller à la sécurité, à l'intégrité et à la stabilité des applications Salesforce, incluant la gestion des rôles utilisateurs et l'application des meilleurs pratiques de l'écosystème Salesforce.
+
+
+
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 8 =====
+source: eluta
+title: Software Quality Assurance Analyst (GenAI-Enabled)
+link: https://www.eluta.ca/spl/software-quality-assurance-analyst-genai-enabled-5af71341f91b058a21c01047cfc96805?imo=12
+date of posting: 5 hours ago
+similarity: 0.5958
+company: Wolters Kluwer Canada Limited
+location: Sherbrooke QC
+job posting:
+Software Quality Assurance Analyst (GenAI-Enabled)
+Wolters Kluwer Canada Limited
+Sherbrooke QC
+Full-Time
+FRENCH VERSION
+Offre d’emploi : Analyste en assurance qualité logicielle (AQL) – IA générative
+Résumé du poste
+Nous sommes à la recherche d’un(e) analyste en assurance qualité logicielle (AQL) hautement motivé (e), possédant une forte orientation vers l’ intelligence artificielle générative (IA générative ) et l’ automatisation , afin de se joindre à notre équipe d’ingénierie de la qualité .
+Dans ce rôle , vous contribuerez à la livraison de logiciels de haute qualité en combinant les pratiques traditionnelles d’assurance qualité avec des techniques de test augmentées par l’IA , contribuant ainsi à l’évolution vers une ingénierie de la qualité orientée agents (Agentic Quality Engineering) et une automatisation intelligente des tests.
+Vous collaborerez étroitement avec les équipes Produit , Développement et DevOps afin de concevoir , exécuter et améliorer en continu les stratégies de test tout au long du cycle de développement logiciel (SDLC).
+Principales responsabilités
+( Alignées avec les standards QA internes et les attentes du rôle )
+Responsabilités principales en assurance qualité
+Analyser les exigences et les récits utilisateurs afin de définir des scénarios de test complets et des stratégies de couverture.
+Concevoir , exécuter et maintenir des cas de test manuels et automatisés pour les tests fonctionnels , de régression , d’intégration et système .
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 9 =====
+source: eluta
+title: Salesforce Solution Architecture Advisor - FSC Wealth Management
+link: https://www.eluta.ca/spl/salesforce-solution-architecture-advisor-fsc-wealth-management-b068b9d5a019448788b8a7effb2853fa?imo=12
+date of posting: 5 hours ago
+similarity: 0.5792
+company: Alithya Group Inc.
+location: Montréal QC
+job posting:
+Salesforce Solution Architecture Advisor - FSC Wealth Management
+Alithya
+Montréal QC
+Full-Time
+Your role, your impact
+As a Salesforce Solution Architecture Advisor with deep expertise in Salesforce Financial Services Cloud (FSC), you'll lead the design and delivery of Salesforce solutions for Wealth Management organizations. In this role, you’ll bridge business strategy and technical execution, ensuring solutions align with advisor, client, and regulatory needs while supporting scalable and secure enterprise architectures .
+Your day-to-day
+Serve as the solution lead for Salesforce FSC implementations within wealth management environments;
+Partner with business stakeholders, including advisors, operations, compliance, and leadership, to translate business requirements into scalable Salesforce solutions;
+Architect end-to-end FSC solutions supporting client and household management, financial accounts & AUM tracking, advisor workflows and productivity, and onboarding, servicing, and relationship management;
+Design Salesforce solutions leveraging FSC data models, standard objects, and industry best practices;
+Define solution architecture across Sales Cloud, Service Cloud, FSC, and related Salesforce platform capabilities;
+Collaborate with technical architecture advisors and developers to ensure designs are technically feasible and aligned with enterprise integration patterns;
+Ensure solutions meet wealth management regulatory, compliance, and data security requirements;
+Lead solution design workshops, produce functional solution designs, and guide configuration and development teams;
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+
+===== JOB 10 =====
+source: eluta
+title: Threat Analyst 3
+link: https://www.eluta.ca/spl/threat-analyst-3-3f7aa0964fdc8458ecf204dee8d38487?imo=12
+date of posting: 5 hours ago
+similarity: 0.6125
+company: Sophos Inc.
+location: 
+job posting:
+Threat Analyst 3
+Sophos Inc.
+Work Remotely
+Full-Time
+Salary: $74,000 - $123,000
+As a Threat  Analyst 3 on our Managed Detection and Response (MDR) team, you will provide best-in-class monitoring, detection, and response services to proactively defend customer environments before attacks prevail. You will work alongside and contribute to a team of cyber threat hunters, incident response analysts, engineers, and ethical hackers by using enterprise, log analysis and endpoint collection systems to facilitate investigations, identification, and neutralization of cyber threats.
+What You Will Do
+Monitor, investigate, and respond to alerts generated by the Sophos security stack (including EDR/XDR capabilities)
+Mentor junior analysts through escalated cases, ensuring thorough and accurate investigation practices.
+Perform end-to-end analysis on suspicious activity to assess scope, impact, and risk
+Identify and respond to cyber threats across customer environments using approved playbooks and tooling
+Accurately document findings, investigative steps, and outcomes in the MDR case management platform
+Conduct threat hunting to identify potential threats throughout the MDR customer base
+Investigate phishing emails, suspicious binaries, and behavioral anomalies
+Support detection tuning by identifying recurring false positives and suggesting improvements
+Stay informed on threat actor behaviors, MITRE ATT&CK techniques, and Sophos threat research updates
+Proactively research emerging IOCs, active exploits, and vulnerabilities to stay ahead of evolving threats
+Contribute to internal knowledge bases, documentation, and continuous improvement initiatives
+Participate in shift rotations and ensure timely, detailed handovers between global teams
++ READ MORE
+
+Apply Now
+Share this job:
+© 2026 Mediacorp Canada
+This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+

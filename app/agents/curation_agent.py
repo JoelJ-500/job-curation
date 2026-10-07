@@ -1,10 +1,14 @@
-"""Agent 2, Step 1: curate job postings by scraping HiringCafe and Eluta.
+"""Agent 2, Steps 1-2: scrape job postings, then dedup + cosine-filter them.
 
-The coordinator runs both site workers concurrently against a shared, thread-safe
-queue capped at the user's `curator_job_limit`. Whichever site yields jobs first
-contributes; when one site runs out of roles/results the other keeps going, so the
-scrape order is never static. Scraped jobs are written to a text file (and the
-`jobs` table) for the later steps (embeddings -> LLM scoring).
+Both site workers run concurrently against a shared, thread-safe queue capped at the
+user's `curator_job_limit` (order is never static; an exhausted site yields to the
+other). The candidate profile is embedded **once**, before any scraping; each
+posting, in the same iteration it is read, is:
+  1. checked against `jobs` + `curated_jobs` (duplicates are skipped), then
+  2. embedded and compared to the profile vector by cosine similarity (anything
+     below the "Semantic Text Match" threshold is discarded).
+Surviving postings are written to a text file (and the `jobs` table) for the LLM
+ATS-scoring step.
 """
 
 import logging
@@ -19,7 +23,7 @@ from app.db.connection import get_connection
 from app.scrapers.base import polite_pause
 from app.scrapers.eluta import ElutaScraper
 from app.scrapers.hiring_cafe import HiringCafeScraper
-from app.services import curation_state
+from app.services import curation_state, embeddings
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +92,7 @@ def _write_queue_file(jobs: list[dict]) -> str:
             handle.write(f"title: {job.get('title')}\n")
             handle.write(f"link: {job.get('link')}\n")
             handle.write(f"date of posting: {job.get('date_of_posting')}\n")
+            handle.write(f"similarity: {job.get('semantic_score')}\n")
             handle.write(f"company: {job.get('company')}\n")
             handle.write(f"location: {job.get('location')}\n")
             handle.write("job posting:\n")
@@ -123,70 +128,129 @@ def _finalize_plain(_scraper, job: dict) -> dict:
     }
 
 
-def _site_worker(name: str, scraper, plans: list, buffer: _CurationBuffer, delay: float, finalize) -> None:
-    """Scrape one site across its role plans until the shared queue is full."""
+class _RunContext:
+    """Shared state passed to both site workers for one curation run."""
+
+    def __init__(self, buffer: "_CurationBuffer", delay: float, profile_vector: list[float],
+                 threshold: float, user_id: int) -> None:
+        self.buffer = buffer
+        self.delay = delay
+        self.profile_vector = profile_vector
+        self.threshold = threshold
+        self.user_id = user_id
+        self.stats: dict[str, dict[str, int]] = {}
+        self.stats_lock = threading.Lock()
+
+    def record(self, name: str, found: int, kept: int) -> None:
+        with self.stats_lock:
+            self.stats[name] = {"found": found, "kept": kept}
+
+
+def _job_similarity(profile_vector: list[float], job: dict) -> float:
+    """Cosine similarity between the profile vector and a posting's embedding."""
+    text = (f"{job.get('title') or ''}\n{job.get('job_posting') or ''}").strip()
+    if not text or not profile_vector:
+        return 0.0
+    try:
+        job_vector = embeddings.embed_text(text)
+    except Exception as error:  # noqa: BLE001 - a single bad posting shouldn't stop the run
+        logger.warning("Embedding failed for %s: %s", job.get("link"), error)
+        return 0.0
+    return embeddings.cosine_similarity(profile_vector, job_vector)
+
+
+def _site_worker(name: str, scraper, plans: list, context: _RunContext, finalize) -> None:
+    """Scrape one site, applying the dedup + cosine filter to every posting."""
+    found = 0
+    kept = 0
+    buffer = context.buffer
     try:
         opener = getattr(scraper, "open_search", None)
         if callable(opener):
             opener()
 
-        for plan in plans:
-            if buffer.is_full():
-                break
-            logger.info("%s: searching role=%r", name, plan.role_query)
-            try:
-                for raw in scraper.iter_jobs(plan):
-                    if buffer.is_full():
-                        break
-                    job = finalize(scraper, raw)
-                    if not job.get("link"):
-                        continue
-                    if not buffer.add(job):
-                        break
-                    curation_state.set_progress(
-                        buffer.count(), f"Scraped {buffer.count()} postings..."
-                    )
-                    polite_pause(delay)
-            except Exception as error:  # noqa: BLE001 - one bad role shouldn't stop the site
-                logger.warning("%s: role %r failed: %s", name, plan.role_query, error)
+        # Each worker thread owns its own connection (psycopg isn't thread-safe).
+        with get_connection() as connection:
+            for plan in plans:
+                if buffer.is_full():
+                    break
+                logger.info("%s: searching role=%r", name, plan.role_query)
+                try:
+                    for raw in scraper.iter_jobs(plan):
+                        if buffer.is_full():
+                            break
+                        link = raw.get("link")
+                        if not link:
+                            continue
+                        found += 1
+
+                        # 1. Skip postings already in jobs or curated_jobs (checked right
+                        #    after reading the result, before the costlier detail fetch).
+                        if repository.job_exists(connection, link):
+                            logger.info("%s: duplicate, skipping %s", name, link)
+                            continue
+
+                        # Build the final record (Eluta fetches the full posting text here).
+                        job = finalize(scraper, raw)
+
+                        # 2. Cosine similarity vs. the (once-computed) profile vector.
+                        similarity = _job_similarity(context.profile_vector, job)
+                        if similarity < context.threshold:
+                            logger.info(
+                                "%s: %.3f < %.3f threshold, discarding %s",
+                                name, similarity, context.threshold, link,
+                            )
+                            continue
+
+                        job["semantic_score"] = round(similarity, 4)
+                        if not buffer.add(job):
+                            break
+
+                        # Persist so later runs dedup this posting.
+                        repository.upsert_job(
+                            connection,
+                            job.get("source") or "unknown",
+                            job.get("title") or "",
+                            link,
+                            None,
+                            job.get("job_posting") or "",
+                        )
+                        kept += 1
+                        curation_state.set_progress(
+                            buffer.count(),
+                            f"Queued {buffer.count()} matching postings "
+                            f"(min similarity {context.threshold})...",
+                        )
+                        polite_pause(context.delay)
+                except Exception as error:  # noqa: BLE001 - one bad role shouldn't stop the site
+                    logger.warning("%s: role %r failed: %s", name, plan.role_query, error)
     except Exception as error:  # noqa: BLE001
         logger.warning("%s: worker failed: %s", name, error)
     finally:
         scraper.close()
+        context.record(name, found, kept)
 
 
-def _persist_jobs(jobs: list[dict]) -> None:
-    """Write scraped jobs to the `jobs` table and log a scrape_run per source."""
-    counts: dict[str, int] = {}
-    for job in jobs:
-        counts[job["source"]] = counts.get(job["source"], 0) + 1
-
+def _log_scrape_runs(stats: dict[str, dict[str, int]]) -> None:
+    """Record a scrape_runs telemetry row per source (best effort)."""
     try:
         with get_connection() as connection:
-            for job in jobs:
-                repository.upsert_job(
-                    connection,
-                    job.get("source") or "unknown",
-                    job.get("title") or "",
-                    job.get("link") or "",
-                    None,  # date_posted: relative text kept in the queue file for now
-                    job.get("job_posting") or "",
-                )
-            for source, found in counts.items():
+            for source, counts in stats.items():
                 run_id = repository.start_scrape_run(connection, source)
-                repository.finish_scrape_run(connection, run_id, found)
-    except Exception as error:  # noqa: BLE001 - persistence is best effort
-        logger.warning("Could not persist scraped jobs to the database: %s", error)
+                repository.finish_scrape_run(connection, run_id, counts["found"])
+    except Exception as error:  # noqa: BLE001
+        logger.warning("Could not log scrape_runs: %s", error)
 
 
 def run_curation(user_id: int) -> None:
-    """Run the full Step 1 pipeline: scrape both sites into the queue."""
+    """Run the Step 1-2 pipeline: scrape both sites, dedup + cosine-filter."""
     curation_state.set_running("Starting the job curator...")
 
     try:
         with get_connection() as connection:
             user_settings = repository.get_settings(connection, user_id)
             profile = repository.get_filter_inputs(connection, user_id)
+            semantic_profile = repository.get_semantic_profile(connection, user_id)
 
         if not profile.get("roles"):
             curation_state.set_error("No roles found in the profile. Add roles before curating.")
@@ -194,24 +258,33 @@ def run_curation(user_id: int) -> None:
 
         limit = int(user_settings.get("curator_job_limit") or DEFAULT_LIMIT)
         delay = float(user_settings.get("time_delay_seconds") or 0)
+        threshold = float(user_settings.get("semantic_text_match_threshold") or 0.0)
+
+        # Embed the candidate profile ONCE, before any scraping happens.
+        curation_state.set_running("Computing your profile embedding...")
+        profile_vector = embeddings.embed_text(embeddings.build_profile_text(semantic_profile))
+
         buffer = _CurationBuffer(limit)
+        context = _RunContext(buffer, delay, profile_vector, threshold, user_id)
 
         plans = {
             "hiringcafe": plan_searches(profile, "hiringcafe", SITE_HINTS["hiringcafe"]),
             "eluta": plan_searches(profile, "eluta", SITE_HINTS["eluta"]),
         }
 
-        curation_state.set_running(f"Scraping up to {limit} postings...")
+        curation_state.set_running(
+            f"Scraping up to {limit} postings (min similarity {threshold})..."
+        )
         workers = [
             threading.Thread(
                 target=_site_worker,
-                args=("eluta", ElutaScraper(), plans["eluta"], buffer, delay, _finalize_eluta),
+                args=("eluta", ElutaScraper(), plans["eluta"], context, _finalize_eluta),
                 name="eluta-worker",
                 daemon=True,
             ),
             threading.Thread(
                 target=_site_worker,
-                args=("hiringcafe", HiringCafeScraper(), plans["hiringcafe"], buffer, delay, _finalize_plain),
+                args=("hiringcafe", HiringCafeScraper(), plans["hiringcafe"], context, _finalize_plain),
                 name="hiringcafe-worker",
                 daemon=True,
             ),
@@ -222,14 +295,18 @@ def run_curation(user_id: int) -> None:
             worker.join()
 
         jobs = buffer.snapshot()
+        output_file = _write_queue_file(jobs)
+        _log_scrape_runs(context.stats)
+
         if not jobs:
-            curation_state.set_error("No job postings were scraped. Both sites returned nothing.")
+            curation_state.set_error(
+                "No new postings passed the filters. They may already be curated or "
+                "below the Semantic Text Match threshold — try again later or lower it."
+            )
             return
 
-        output_file = _write_queue_file(jobs)
-        _persist_jobs(jobs)
         curation_state.set_done(
-            f"Scraped {len(jobs)} job postings. Queue written to {output_file}.",
+            f"Queued {len(jobs)} postings (cosine >= {threshold}). Queue written to {output_file}.",
             len(jobs),
             output_file,
         )

@@ -25,7 +25,7 @@
 - Backend dependencies are in `requirements.txt`
   (fastapi, uvicorn, python-multipart, pydantic, pydantic-settings, python-dotenv,
   psycopg[binary], pgvector, langchain, langchain-core, langchain-groq, selenium,
-  pypdf, python-docx, pymupdf).
+  langchain-community, fastembed, pypdf, python-docx, pymupdf).
 
 ## Job-site scraping (Agent 2, Step 1 — implemented)
 - **Selenium 4 + Chromium 154 + ChromeDriver 154**, installed into the backend image
@@ -48,6 +48,14 @@
 ## Scraper API endpoints (Step 1)
 - `GET/PUT /api/settings` — curator settings (incl. `curator_job_limit`, default 10).
 - `POST /api/curation/start`, `GET /api/curation/status` — start/poll a curation run.
+
+## Embeddings (Agent 2, Step 2 — implemented)
+- **LangChain `FastEmbedEmbeddings`** (`langchain-community` + `fastembed`) — runs the
+  ONNX `all-MiniLM-L6-v2` model **without PyTorch**; `app/services/embeddings.py`
+  wraps it (`embed_text`, `cosine_similarity`, `build_profile_text`). Model configurable
+  via `EMBEDDING_MODEL`. `langchain-community` emits a "sunset" deprecation warning but
+  works; can migrate to a standalone package later.
+- Cosine similarity is computed in Python (not pgvector) for the Step-2 pre-filter.
 
 ## Language & Runtime
 - **Python 3.11** (base image `python:3.11-slim`).

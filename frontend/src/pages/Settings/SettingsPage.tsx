@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -18,21 +18,33 @@ const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve,
 // to start scraping. Thresholds are placeholders until the filtering steps exist.
 export default function SettingsPage() {
   const [jobLimit, setJobLimit] = useState(10);
+  const [semanticThreshold, setSemanticThreshold] = useState(0.5);
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | undefined>();
   const [curationState, setCurationState] = useState<CurationState>('idle');
   const [curationMessage, setCurationMessage] = useState<string | undefined>();
   const [jobsScraped, setJobsScraped] = useState(0);
 
+  useEffect(() => {
+    settingsApi
+      .getSettings()
+      .then((settings) => {
+        setJobLimit(settings.curator_job_limit ?? 10);
+        setSemanticThreshold(settings.semantic_text_match_threshold ?? 0.5);
+      })
+      .catch(() => undefined);
+  }, []);
+
   const saveSettings = useCallback(async () => {
     const current = await settingsApi.getSettings();
     const updated: UserSettings = {
       ...current,
       curator_job_limit: jobLimit,
-      curator_time_period_minutes: null
+      curator_time_period_minutes: null,
+      semantic_text_match_threshold: semanticThreshold
     };
     return settingsApi.saveSettings(updated);
-  }, [jobLimit]);
+  }, [jobLimit, semanticThreshold]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -142,10 +154,21 @@ export default function SettingsPage() {
       </SectionCard>
 
       <SectionCard
-        title="Thresholds (coming soon)"
-        description="Semantic match, compatibility score and skill overlap thresholds arrive with the filtering steps."
+        title="Filter thresholds"
+        description="Postings whose semantic similarity to your profile falls below this are discarded before scoring."
       >
-        <Alert severity="info">Coming soon.</Alert>
+        <Stack spacing={2} sx={{ maxWidth: 380 }}>
+          <TextField
+            label="Semantic Text Match threshold"
+            type="number"
+            value={semanticThreshold}
+            onChange={(event) =>
+              setSemanticThreshold(Math.min(1, Math.max(0, Number(event.target.value) || 0)))
+            }
+            helperText="0 to 1 (default 0.5). Higher = fewer, more relevant postings."
+            disabled={busy}
+          />
+        </Stack>
       </SectionCard>
     </Stack>
   );
